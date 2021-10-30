@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31727.386
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "soulsoft_delivery_asp", "soulsoft_delivery_asp\soulsoft_delivery_asp.csproj", "{6DC96008-F4FF-434D-8512-BB5A7D01E7E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6DC96008-F4FF-434D-8512-BB5A7D01E7E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC96008-F4FF-434D-8512-BB5A7D01E7E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC96008-F4FF-434D-8512-BB5A7D01E7E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC96008-F4FF-434D-8512-BB5A7D01E7E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7AB56B2-EE03-44BA-8AAD-63324A0CE0F7}
+	EndGlobalSection
+EndGlobal
