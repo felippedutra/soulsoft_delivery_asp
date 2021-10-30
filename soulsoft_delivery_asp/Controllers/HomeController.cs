@@ -23,6 +23,7 @@ namespace soulsoft_delivery_asp.Controllers
 
         public IActionResult Index()
         {
+            //Teste
 
             //return Redirect("Login/Index");
             return View();
