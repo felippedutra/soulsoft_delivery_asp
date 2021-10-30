@@ -5,12 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace soulsoft_delivery_asp.Controllers
 {
     public class HomeController : Controller
     {
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -19,6 +22,13 @@ namespace soulsoft_delivery_asp.Controllers
         }
 
         public IActionResult Index()
+        {
+
+            //return Redirect("Login/Index");
+            return View();
+        }
+
+        public IActionResult Teste()
         {
             return View();
         }

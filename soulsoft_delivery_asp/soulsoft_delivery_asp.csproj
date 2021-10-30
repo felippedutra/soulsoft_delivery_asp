@@ -4,4 +4,39 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwwroot\build\**" />
+    <Compile Remove="wwwroot\dist\**" />
+    <Compile Remove="wwwroot\docs\**" />
+    <Compile Remove="wwwroot\pages\**" />
+    <Compile Remove="wwwroot\plugins\**" />
+    <Content Remove="wwwroot\build\**" />
+    <Content Remove="wwwroot\dist\**" />
+    <Content Remove="wwwroot\docs\**" />
+    <Content Remove="wwwroot\pages\**" />
+    <Content Remove="wwwroot\plugins\**" />
+    <EmbeddedResource Remove="wwwroot\build\**" />
+    <EmbeddedResource Remove="wwwroot\dist\**" />
+    <EmbeddedResource Remove="wwwroot\docs\**" />
+    <EmbeddedResource Remove="wwwroot\pages\**" />
+    <EmbeddedResource Remove="wwwroot\plugins\**" />
+    <None Remove="wwwroot\build\**" />
+    <None Remove="wwwroot\dist\**" />
+    <None Remove="wwwroot\docs\**" />
+    <None Remove="wwwroot\pages\**" />
+    <None Remove="wwwroot\plugins\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\iframe.html" />
+    <Content Remove="wwwroot\index.html" />
+    <Content Remove="wwwroot\index2.html" />
+    <Content Remove="wwwroot\index3.html" />
+    <Content Remove="wwwroot\starter.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
 </Project>

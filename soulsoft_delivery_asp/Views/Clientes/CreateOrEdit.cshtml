@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["breadcrumb"] = "Clientes";
+    ViewData["breadcrumb_url"] = "/Clientes/Index";
+    ViewData["title"] = "Cadastrar";
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- jquery validation -->
+        <div class="card card-secundary">
+            <div class="card-header">
+                <h3 class="card-title">Dados do Usuário</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form method="post" asp-controller="Clientes" asp-action="CreateOrEdit">
+                <div class="card-body">
+                    <input type="hidden" name="id" id="id" value="">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" name="nome" class="form-control" id="nome" placeholder="Digite o nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="text" name="telefone" class="form-control" id="telefone" placeholder="Digite o Telefone">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Digite o Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" name="senha" class="form-control" id="senha" placeholder="Digite a Senha">
+                    </div>
+                    <div class="form-group mb-0">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="ativo" class="custom-control-input" id="ativo">
+                            <label class="custom-control-label" for="ativo">Ativo?</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <a href="#" class="btn btn-danger">Cancelar</a>
+                </div>
+            </form>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!--/.col (left) -->
+    <!-- right column -->
+    <div class="col-md-6">
+
+    </div>
+    <!--/.col (right) -->
+</div>
+<!-- /.row -->

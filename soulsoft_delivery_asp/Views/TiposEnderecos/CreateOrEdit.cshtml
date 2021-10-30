@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["breadcrumb"] = "TiposEnderecos";
+    ViewData["breadcrumb_url"] = "/TiposEnderecos/Index";
+    ViewData["title"] = "Cadastrar";
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- jquery validation -->
+        <div class="card card-secundary">
+            <div class="card-header">
+                <h3 class="card-title">Dados do Tipo de Endereço</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form method="post" asp-controller="TiposEnderecos" asp-action="CreateOrEdit">
+                <div class="card-body">
+                    <input type="hidden" name="id" id="id" value="">
+                    <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <input type="text" name="descricao" class="form-control" placeholder="Digite a Descrição">
+                    </div>
+                    <div class="form-group mb-0">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="ativo" class="custom-control-input">
+                            <label class="custom-control-label" for="ativo">Ativo?</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <a href="#" class="btn btn-danger">Cancelar</a>
+                </div>
+            </form>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!--/.col (left) -->
+    <!-- right column -->
+    <div class="col-md-6">
+
+    </div>
+    <!--/.col (right) -->
+</div>
+<!-- /.row -->

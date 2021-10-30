@@ -1,0 +1,70 @@
+﻿@{
+    //ViewData["crumbs"] = "Teste";
+    //ViewData["crumbs_url"] = "Usuarios/Teste";
+    ViewData["title"] = "Produtos";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Listagem de Produtos</h3>
+
+                <div class="card-tools">
+                    <div class="input-group input-group-sm">
+                        <input type="text" name="table_search" class="form-control float-right" placeholder="Pesquisar">
+
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-default">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <a asp-controller="Produtos" asp-action="CreateOrEdit" class="btn btn-primary">Novo Produto</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Qtd</th>
+                            <th>Valor</th>
+                            <th>Situação</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Qtd</th>
+                            <th>Valor</th>
+                            <th>Situação</th>
+                            <th>#</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+</div>
+<!-- /.row -->

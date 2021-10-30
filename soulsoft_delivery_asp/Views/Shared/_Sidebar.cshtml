@@ -1,0 +1,119 @@
+﻿<!-- Aside -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/Home/Index" class="brand-link">
+        <img src="~/img/logo_resumida.png" alt="SoulSoft Logo Resumida" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">SoulSoft Delivery</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="~/img/user.png" class="img-circle elevation-2" alt="Usuário logado">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">Usuário logado</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link Home">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>
+                            Home
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Pedidos" asp-action="Index" class="nav-link Pedidos">
+                        <i class="nav-icon fas fa-cash-register"></i>
+                        <p>
+                            Pedidos
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Clientes" asp-action="Index" class="nav-link Clientes">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Clientes
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Produtos" asp-action="Index" class="nav-link Produtos">
+                        <i class="nav-icon fas fa-boxes"></i>
+                        <p>
+                            Produtos
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link Usuarios TiposUsuarios TiposProdutos TiposMedidas TiposEnderecos">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Outros Cadastros
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="Usuarios" asp-action="Index" class="nav-link Usuarios">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Usuários</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="TiposUsuarios" asp-action="Index" class="nav-link TiposUsuarios">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tipo de Usuário</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="TiposProdutos" asp-action="Index" class="nav-link TiposProdutos">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tipo de Produto</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="TiposMedidas" asp-action="Index" class="nav-link TiposMedidas">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tipo de Medida</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="TiposEnderecos" asp-action="Index" class="nav-link TiposEnderecos">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tipo de Endereço</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link VendasPorPeriodo">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p>
+                            Relatórios
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="Relatorios" asp-action="VendasPorPeriodo" class="nav-link VendasPorPeriodo">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Vendas por Periodo</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
