@@ -1,4 +1,6 @@
-﻿@{
+﻿@model soulsoft_delivery_asp.Models.LoginApi
+
+@{
     Layout = "~/Views/Shared/_Layout_login.cshtml";
     ViewBag.Title = "Index";
 }
@@ -19,14 +21,16 @@
                 <div class="card-body">
                     <h5 class="card-title">Entre com seus dados</h5>
                     <div>
-                        <form method="post" asp-controller="Login" asp-action="ValidaLogin" id="FormUsuario">
+                        <form method="post" asp-controller="Login" asp-action="Index" id="FormUsuario">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" id="email">
+                                <input type="email" asp-for="usuario" class="form-control" id="email">
+                                <span asp-validation-for="usuario" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="senha" class="form-label">Senha</label>
-                                <input type="password" name="senha" class="form-control" id="senha">
+                                <input type="password" asp-for="senha" class="form-control" id="senha">
+                                <span asp-validation-for="senha" class="text-danger"></span>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Entrar</button>
                             <span><a href="#">Esqueceu sua senha?</a></span>
@@ -37,4 +41,8 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 

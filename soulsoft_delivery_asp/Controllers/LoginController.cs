@@ -27,55 +27,51 @@ namespace soulsoft_delivery_asp.Controllers
             _httpClient.BaseAddress = new System.Uri("http://147.182.192.85:8085/api/");
         }
 
+        // GET
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View(new LoginApi());
         }
 
         // POST
         [HttpPost]
-        public IActionResult ValidaLogin()
+        [ValidateAntiForgeryToken]
+        public IActionResult Index([Bind("usuario", "senha")] LoginApi LoginApi)
         {
-            //string email = "";
-            //string senha = "";
-            //string token = "";
-
-            //LoginApi usuario = new LoginApi
-            //{
-            //    usuario = "felipeviadinho@gmail.com",
-            //    senha = "Teste"
-            //};
-
-            //JsonConversao jsonconv = new JsonConversao();
-            //dynamic strAlunos = jsonconv.ConverteObjectParaJSon<LoginApi>(usuario);
-            //usuario = jsonconv.ConverteJSonParaObject<LoginApi>(strAlunos);
+            if (ModelState.IsValid)
+            {
+                //JsonConversao jsonconv = new JsonConversao();
+                //dynamic strAlunos = jsonconv.ConverteObjectParaJSon<LoginApi>(usuario);
+                //usuario = jsonconv.ConverteJSonParaObject<LoginApi>(strAlunos);
 
 
-            //string usuarioLogin = @"{ ""usuario"" : ""felipeviadinho@gmail.com"", ""senha"" : ""Teste"" }";
-            //dynamic json = JsonConvert.DeserializeObject(usuarioLogin);
+                //string usuarioLogin = @"{ ""usuario"" : ""felipeviadinho@gmail.com"", ""senha"" : ""Teste"" }";
+                //dynamic json = JsonConvert.DeserializeObject(usuarioLogin);
 
-            //email = Request.Form["email"];
-            //senha = Request.Form["senha"];
+                //{
+                //    "usuario":"felipeviadinho@gmail.com",
+                //    "Senha":"Teste"
+                //}
 
-            //if (email == "" || senha == "")
-            //{
-            //    return Redirect("/Login/Index");
-            //}
 
-            //HttpResponseMessage response = _httpClient.PostAsync("Seguranca/Login", strAlunos).Result;
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    string resposta = response.Content.ReadAsStringAsync().Result;
-            //    dynamic retorno = JsonConvert.DeserializeObject(resposta);
-            //    token = retorno.token;
-            //    if (token != "")
-            //    {
-            //        return Redirect("/Home/Index");
-            //    } 
-            //}
+                //HttpResponseMessage response = _httpClient.PostAsync("Seguranca/Login", usuario).Result;
 
-            return Redirect("/Home/Index");
-            //return Redirect("/Login/Index");
+                //if (response.IsSuccessStatusCode)
+                //{
+                //    string resposta = response.Content.ReadAsStringAsync().Result;
+                //    dynamic retorno = JsonConvert.DeserializeObject(resposta);
+                //    token = retorno.token;
+                //    if (token != "")
+                //    {
+                //        return Redirect("/Home/Index");
+                //    }
+                //}
+
+                return Redirect("/Home/Index");
+            }
+
+            return View(LoginApi);
         }
     }
 }
