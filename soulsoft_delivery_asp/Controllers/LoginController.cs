@@ -31,7 +31,7 @@ namespace soulsoft_delivery_asp.Controllers
             //Preparando contexto para consumir API
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.BaseAddress = new System.Uri("http://147.182.192.85:8085/api/");
+            _httpClient.BaseAddress = new System.Uri("https://www.soulsoft.tec.br/api/");
         }
 
         // GET
@@ -54,11 +54,11 @@ namespace soulsoft_delivery_asp.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string resposta = response.Content.ReadAsStringAsync().Result;
-                    dynamic retorno = JsonConvert.DeserializeObject(resposta);
-                    if (retorno.status == "Sucesso")
+                    string responseString = response.Content.ReadAsStringAsync().Result;
+                    dynamic responseJson = JsonConvert.DeserializeObject(responseString);
+                    if (responseJson.status == "Sucesso")
                     {
-                        string token = retorno.conteudo[0].token;
+                        string token = responseJson.conteudo[0].token;
                         //Criando as variaveis de sessão
                         HttpContext.Session.SetString(SessionToken, token);
                         //HttpContext.Session.SetString(SessionNome, "");

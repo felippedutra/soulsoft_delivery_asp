@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<soulsoft_delivery_asp.Models.UsuarioApi>
+
+@{
     ViewData["title"] = "Usuários";
 }
 
@@ -36,15 +38,33 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach (var item in Model)
+                        {
                         <tr>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.nome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.telefone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tipo_usuario_id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.situacao)
+                            </td>
+                            <td>
+                                <button class="btn btn-primary" asp-controller="Usuarios" asp-action="CreateOrEdit" asp-route-id="@item.id"><i class="fa fa-pencil-alt"></i></button>
+                                <button class="btn btn-danger" asp-controller="Usuarios" asp-action="Delete" asp-route-id="@item.id" onclick="return confirm('Deseja realmente deletar?')" class="text-danger ml-1"><i class="fa fa-trash-alt"></i></button>
+                            </td>
                         </tr>
+                        }
                     </tbody>
                     <tfoot>
                         <tr>

@@ -14,7 +14,7 @@ namespace soulsoft_delivery_asp.Models
         [Required(ErrorMessage = "É necessário informar o telefone")]
         public string telefone { get; set; }
         [Required(ErrorMessage = "É necessário informar o email")]
-        public EmailAddressAttribute email { get; set; }
+        public string email { get; set; }
         public DateTime dt_ultimo_acesso { get; set; }
         public DateTime dt_cadastro { get; set; }
         [Required(ErrorMessage = "É necessário informar a situação")]
@@ -23,5 +23,6 @@ namespace soulsoft_delivery_asp.Models
         public string senha { get; set; }
         [Required(ErrorMessage = "É necessário informar o tipo de usuário")]
         public int tipo_usuario_id { get; set; }
+        public string tipoUsuarioModel { get; set; }
     }
 }
