@@ -56,9 +56,9 @@ namespace soulsoft_delivery_asp.Controllers
                 {
                     string resposta = response.Content.ReadAsStringAsync().Result;
                     dynamic retorno = JsonConvert.DeserializeObject(resposta);
-                    string token = retorno.token;
-                    if (token != "")
+                    if (retorno.status == "Sucesso")
                     {
+                        string token = retorno.conteudo[0].token;
                         //Criando as variaveis de sessão
                         HttpContext.Session.SetString(SessionToken, token);
                         //HttpContext.Session.SetString(SessionNome, "");
@@ -70,9 +70,12 @@ namespace soulsoft_delivery_asp.Controllers
 
                         return Redirect("/Home/Index");
                     }
+                    ViewData["LoginMessage"] = "Email ou senha incorreta.";
+                }
+                else
+                {
                     ViewData["LoginMessage"] = "Não foi possível autenticar, tente novamente.";
                 }
-                ViewData["LoginMessage"] = "Email ou senha incorreta.";
             }
             return View(LoginApi);
         }
