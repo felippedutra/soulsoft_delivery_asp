@@ -11,6 +11,6 @@ namespace soulsoft_delivery_asp.Models
         [Required(ErrorMessage ="Informe o Usuário")]
         public string usuario { get; set; }
         [Required(ErrorMessage = "Informe a Senha")]
-        public string senha { get; set; }
+        public string Senha { get; set; }
     }
 }
