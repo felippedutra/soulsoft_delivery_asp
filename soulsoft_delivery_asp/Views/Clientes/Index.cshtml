@@ -1,7 +1,17 @@
-﻿@{
-    //ViewData["crumbs"] = "Teste";
-    //ViewData["crumbs_url"] = "Usuarios/Teste";
+﻿@model IEnumerable<soulsoft_delivery_asp.Models.ClienteApi>
+
+@{
     ViewData["title"] = "Clientes";
+}
+
+@if (ViewData["ClientesMessage"] != null)
+{
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2 mr-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+        <div>
+            @ViewData["ClientesMessage"]
+        </div>
+    </div>
 }
 
 <div class="row">
@@ -33,18 +43,34 @@
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Situação</th>
-                            <th>#</th>
+                            <th>Opções</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nome)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Telefone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.situacao)
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary btn-sm" asp-controller="Clientes" asp-action="CreateOrEdit" asp-route-id="@item.id"><i class="fa fa-pencil-alt"></i></a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="Clientes" asp-action="Delete" asp-route-id="@item.id" onclick="return confirm('Deseja remover o Cliente selecionado?')"><i class="fa fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                     <tfoot>
                         <tr>
@@ -53,7 +79,7 @@
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Tipo</th>
-                            <th>#</th>
+                            <th>Opções</th>
                         </tr>
                     </tfoot>
                 </table>

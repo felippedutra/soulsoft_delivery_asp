@@ -1,4 +1,6 @@
-﻿@{
+﻿@model soulsoft_delivery_asp.Models.ClienteApi
+
+@{
     ViewData["breadcrumb"] = "Clientes";
     ViewData["breadcrumb_url"] = "/Clientes/Index";
     ViewData["title"] = "Cadastrar";
@@ -16,28 +18,35 @@
             <!-- form start -->
             <form method="post" asp-controller="Clientes" asp-action="CreateOrEdit">
                 <div class="card-body">
-                    <input type="hidden" name="id" id="id" value="">
+                    <input type="hidden" name="id" id="id" asp-for="id">
                     <div class="form-group">
                         <label for="nome">Nome</label>
-                        <input type="text" name="nome" class="form-control" id="nome" placeholder="Digite o nome completo">
+                        <input type="text" asp-for="Nome" class="form-control" id="nome" placeholder="Digite o nome completo">
+                        <span asp-validation-for="Nome" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="text" name="telefone" class="form-control" id="telefone" placeholder="Digite o Telefone">
+                        <input type="text" asp-for="Telefone" class="form-control telefone" id="telefone" placeholder="Digite o Telefone">
+                        <span asp-validation-for="Telefone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control" id="email" placeholder="Digite o Email">
+                        <input type="email" asp-for="email" class="form-control" id="email" placeholder="Digite o Email">
+                        <span asp-validation-for="email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="senha">Senha</label>
-                        <input type="password" name="senha" class="form-control" id="senha" placeholder="Digite a Senha">
+                        <input type="text" asp-for="senha" class="form-control senha" id="senha" placeholder="Digite a Senha">
+                        <span asp-validation-for="senha" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-0">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="ativo" class="custom-control-input" id="ativo">
-                            <label class="custom-control-label" for="ativo">Ativo?</label>
-                        </div>
+                        <label for="situacao">Situação</label>
+                        <select asp-for="situacao" class="form-control" id="situacao">
+                            <option></option>
+                            <option value="Ativo">Ativo</option>
+                            <option value="Inativo">Inativo</option>
+                        </select>
+                        <span asp-validation-for="situacao" class="text-danger"></span>
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -50,10 +59,9 @@
         <!-- /.card -->
     </div>
     <!--/.col (left) -->
-    <!-- right column -->
-    <div class="col-md-6">
-
-    </div>
-    <!--/.col (right) -->
 </div>
 <!-- /.row -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

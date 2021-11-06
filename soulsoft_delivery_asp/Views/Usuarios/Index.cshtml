@@ -4,6 +4,16 @@
     ViewData["title"] = "Usuários";
 }
 
+@if (ViewData["UsuariosMessage"] != null)
+{
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2 mr-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+        <div>
+            @ViewData["UsuariosMessage"]
+        </div>
+    </div>
+}
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -34,36 +44,36 @@
                             <th>Email</th>
                             <th>Tipo</th>
                             <th>Situação</th>
-                            <th>#</th>
+                            <th>Opções</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.nome)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.telefone)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.tipo_usuario_id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.situacao)
-                            </td>
-                            <td>
-                                <button class="btn btn-primary" asp-controller="Usuarios" asp-action="CreateOrEdit" asp-route-id="@item.id"><i class="fa fa-pencil-alt"></i></button>
-                                <button class="btn btn-danger" asp-controller="Usuarios" asp-action="Delete" asp-route-id="@item.id" onclick="return confirm('Deseja realmente deletar?')" class="text-danger ml-1"><i class="fa fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.nome)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.telefone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.tipo_usuario_id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.situacao)
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary btn-sm" asp-controller="Usuarios" asp-action="CreateOrEdit" asp-route-id="@item.id"><i class="fa fa-pencil-alt"></i></a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="Usuarios" asp-action="Delete" asp-route-id="@item.id" onclick="return confirm('Deseja remover o Usuário selecionado?')"><i class="fa fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                     <tfoot>
@@ -74,7 +84,7 @@
                             <th>Email</th>
                             <th>Tipo</th>
                             <th>Situação</th>
-                            <th>#</th>
+                            <th>Opções</th>
                         </tr>
                     </tfoot>
                 </table>

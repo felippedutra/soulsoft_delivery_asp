@@ -1,4 +1,6 @@
-﻿@{
+﻿@model soulsoft_delivery_asp.Models.UsuarioApi
+
+@{
     ViewData["breadcrumb"] = "Usuários";
     ViewData["breadcrumb_url"] = "/Usuarios/Index";
     ViewData["title"] = "Cadastrar";
@@ -16,41 +18,56 @@
             <!-- form start -->
             <form method="post" asp-controller="Usuarios" asp-action="CreateOrEdit">
                 <div class="card-body">
-                    <input type="hidden" name="id" id="id" value="">
+                    <input type="hidden" id="id" asp-for="id">
                     <div class="form-group">
                         <label for="nome">Nome</label>
-                        <input type="text" name="nome" class="form-control" id="nome" value="@ViewBag.nome" placeholder="Digite o nome completo">
+                        <input type="text" class="form-control" id="nome" asp-for="nome" placeholder="Digite o nome completo">
+                        <span asp-validation-for="nome" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="text" name="telefone" class="form-control" id="telefone" value="@ViewBag.telefone" placeholder="Digite o Telefone">
+                        <input type="text" class="form-control telefone" id="telefone" asp-for="telefone" placeholder="Digite o Telefone">
+                        <span asp-validation-for="telefone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control" id="email" value="@ViewBag.email" placeholder="Digite o Email">
+                        <input type="email" class="form-control" id="email" asp-for="email" placeholder="Digite o Email">
+                        <span asp-validation-for="email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="senha">Senha</label>
-                        <input type="password" name="senha" class="form-control" id="senha" value="@ViewBag.senha" placeholder="Digite a Senha">
+                        <input type="text" class="form-control senha" id="senha" asp-for="senha" placeholder="Digite a Senha">
+                        <span asp-validation-for="senha" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label for="tipo_usuario">Tipo de Usuário</label>
-                        <select name="tipo_usuario" class="form-control">
-                            <option value="0">Selecione</option>
+                        <label for="tipo_usuario_id">Tipo de Usuário</label>
+                        <select asp-for="tipo_usuario_id" class="form-control" id="tipo_usuario_id">
+                            <option></option>
                             <option value="1">Tipo 1</option>
                         </select>
+                        <span asp-validation-for="tipo_usuario_id" class="text-danger"></span>
                     </div>
-                    <div class="form-group mb-0">
+                    @*<div class="form-group mb-0">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="ativo" class="custom-control-input" id="ativo">
-                            <label class="custom-control-label" for="ativo">Ativo?</label>
+                            <input type="checkbox" class="custom-control-input" id="situacao">
+                            <label class="custom-control-label" for="situacao">Ativo?</label>
+                            <span class="text-danger"></span>
                         </div>
-                    </div>
+                    </div>*@
+                <div class="form-group mb-0">
+                    <label for="situacao">Situação</label>
+                    <select asp-for="situacao" class="form-control" id="situacao">
+                        <option></option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                    <span asp-validation-for="situacao" class="text-danger"></span>
+                </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Salvar</button>
-                    <a href="#" class="btn btn-danger">Cancelar</a>
+                    <a asp-controller="Usuarios" asp-action="Index" class="btn btn-danger">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -64,3 +81,7 @@
     <!--/.col (right) -->
 </div>
 <!-- /.row -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
