@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace soulsoft_delivery_asp.Models
 {
-    public class ClienteApi
+    public class ClienteApiModel
     {
         public int id { get; set; }
         [Required(ErrorMessage ="Informe o Nome")]

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace soulsoft_delivery_asp.Models
 {
-    public class UsuarioApi
+    public class UsuarioApiModel
     {
         public int id { get; set; }
         [Required(ErrorMessage="É necessário informar o nome")]

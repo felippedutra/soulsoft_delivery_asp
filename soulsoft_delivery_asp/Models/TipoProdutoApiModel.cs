@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace soulsoft_delivery_asp.Models
 {
-    public class TipoUsuario
+    public class TipoProdutoApiModel
     {
         public int Id { get; set; }
-        [StringLength(100)]
+        [StringLength(150)]
         [Required(ErrorMessage ="Informe o Nome")]
         public string Nome { get; set; }
+        public DateTime Dt_cadastro { get; set; }
         [StringLength(100)]
         [Required(ErrorMessage = "Informe a Situação")]
-        public string Stuacao { get; set; }
-        public DateTime DataCadastro { get; set; }
+        public string Situacao { get; set; }
+
     }
 }

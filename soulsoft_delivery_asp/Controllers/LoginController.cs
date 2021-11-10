@@ -38,13 +38,13 @@ namespace soulsoft_delivery_asp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(new LoginApi());
+            return View(new LoginApiModel());
         }
 
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index([Bind("usuario", "Senha")] LoginApi LoginApi)
+        public IActionResult Index([Bind("usuario", "Senha")] LoginApiModel LoginApi)
         {
             if (ModelState.IsValid)
             {

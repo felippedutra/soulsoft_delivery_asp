@@ -1,0 +1,27 @@
+﻿*SUBIR ARQUIVOS PARA PRODUÇÃO*
+
+1 - Abrir raiz do projeto
+Ex: C:\Users\Felipe Dutra\source\repos\SoulSoft\SoulSoftApi
+2 - Shift + Botão Direito e clicar abrir janela com PowerShell 
+3 - Executar o código: dotnet publish --configuration Release no diretório:
+Ex: PS C:\Users\Felipe Dutra\source\repos\SoulSoft\SoulSoftApi>
+4 - Seguir o diretorio para onde os arquivos foram publicados:
+Ex: C:\Users\Felipe Dutra\source\repos\SoulSoft\SoulSoftApi\bin\Release\netcoreapp3.1\publish
+5 - Subir os arquivos utilizando o FileZilla
+usuario: root
+senha: soulsoft
+porta: 22
+6 - Executar o programa Putty
+usuario: root
+senha: soulsoft
+
+Exec: 
+cd .. --> Voltar
+ls --> Listar arquivos do local
+
+Acessar www/APIback/ para publicar os arquivos: 
+
+Executar os comandos: 
+1 - killall -9 dotnet
+2 - Ctrl + C
+3 - exit

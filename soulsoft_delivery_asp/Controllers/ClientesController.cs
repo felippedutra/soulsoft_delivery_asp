@@ -38,12 +38,12 @@ namespace soulsoft_delivery_asp.Controllers
                 if (responseJson.status == "Sucesso")
                 {
                     JArray jObject = responseJson.conteudo as JArray;
-                    var clientes = jObject.ToObject<List<ClienteApi>>();
+                    var clientes = jObject.ToObject<List<ClienteApiModel>>();
 
                     return View(clientes);
                 }
             }
-            return View(new List<ClienteApi>());
+            return View(new List<ClienteApiModel>());
         }
 
         [HttpGet]
@@ -59,7 +59,7 @@ namespace soulsoft_delivery_asp.Controllers
 
                     JArray jObject = responseJson.conteudo as JArray;
 
-                    ClienteApi cliente = new ClienteApi
+                    ClienteApiModel cliente = new ClienteApiModel
                     {
                         id = responseJson.conteudo[0].id,
                         Nome = responseJson.conteudo[0].nome,
@@ -75,18 +75,18 @@ namespace soulsoft_delivery_asp.Controllers
                 {
                     //Retorna usuário não encontrado
                     //return NotFound();
-                    return View(new ClienteApi());
+                    return View(new ClienteApiModel());
                 }
             }
             else
             {
-                return View(new ClienteApi());
+                return View(new ClienteApiModel());
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("id", "Nome", "Telefone", "email", "senha", "situacao")] ClienteApi ClienteApi)
+        public IActionResult CreateOrEdit([Bind("id", "Nome", "Telefone", "email", "senha", "situacao")] ClienteApiModel ClienteApi)
         {
             if (ModelState.IsValid)
             {

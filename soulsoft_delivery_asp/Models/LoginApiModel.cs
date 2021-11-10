@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace soulsoft_delivery_asp.Models
 {
-    public class LoginApi
+    public class LoginApiModel
     {
         [Required(ErrorMessage ="Informe o Usuário")]
         public string usuario { get; set; }

@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace soulsoft_delivery_asp.Controllers
 {
-    public class TiposTiposProdutosController : Controller
+    public class TiposUsuariosController : Controller
     {
         private readonly HttpClient _httpClient;
-        public TiposTiposProdutosController()
+        public TiposUsuariosController()
         {
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -23,14 +23,14 @@ namespace soulsoft_delivery_asp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string TiposProdutosMessage = "")
+        public IActionResult Index(string TiposUsuariosMessage = "")
         {
-            if (TiposProdutosMessage != "")
+            if (TiposUsuariosMessage != "")
             {
-                ViewData["TiposProdutosMessage"] = TiposProdutosMessage;
+                ViewData["TiposUsuariosMessage"] = TiposUsuariosMessage;
             }
 
-            HttpResponseMessage response = _httpClient.GetAsync("User/Listar").Result;
+            HttpResponseMessage response = _httpClient.GetAsync("TipoUsuario/Listar").Result;
             if (response.IsSuccessStatusCode)
             {
                 var responseString = response.Content.ReadAsStringAsync().Result;
@@ -42,12 +42,12 @@ namespace soulsoft_delivery_asp.Controllers
 
                     //Teste 2
                     JArray jObject = responseJson.conteudo as JArray;
-                    var TiposProdutos = jObject.ToObject<List<UsuarioApi>>();
+                    var TiposUsuarios = jObject.ToObject<List<TipoUsuarioApiModel>>();
 
-                    return View(TiposProdutos);
+                    return View(TiposUsuarios);
                 }
             }
-            return View(new List<UsuarioApi>());
+            return View(new List<TipoUsuarioApiModel>());
         }
 
         [HttpGet]
@@ -55,7 +55,7 @@ namespace soulsoft_delivery_asp.Controllers
         {
             if (id != 0)
             {
-                HttpResponseMessage response = _httpClient.GetAsync($"User/{id}").Result;
+                HttpResponseMessage response = _httpClient.GetAsync($"TipoUsuario/{id}").Result;
                 if (response.IsSuccessStatusCode)
                 {
                     var responseString = response.Content.ReadAsStringAsync().Result;
@@ -63,47 +63,40 @@ namespace soulsoft_delivery_asp.Controllers
 
                     JArray jObject = responseJson.conteudo as JArray;
 
-                    UsuarioApi usuario = new UsuarioApi
+                    TipoUsuarioApiModel TipoUsuario = new TipoUsuarioApiModel
                     {
-                        id = responseJson.conteudo[0].id,
-                        nome = responseJson.conteudo[0].nome,
-                        telefone = responseJson.conteudo[0].telefone,
-                        email = responseJson.conteudo[0].email,
-                        senha = responseJson.conteudo[0].senha,
-                        tipo_usuario_id = responseJson.conteudo[0].tipo_usuario_id,
-                        situacao = responseJson.conteudo[0].situacao
+                        Id = responseJson.conteudo[0].id,
+                        Nome = responseJson.conteudo[0].nome,
+                        Stuacao = responseJson.conteudo[0].stuacao
                     };
-
-                    return View(usuario);
+                    return View(TipoUsuario);
                 }
                 else
                 {
                     //Retorna usuário não encontrado
                     //return NotFound();
-                    return View(new UsuarioApi());
+                    return View(new TipoUsuarioApiModel());
                 }
             }
             else
             {
-                return View(new UsuarioApi());
+                return View(new TipoUsuarioApiModel());
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("id", "nome", "telefone", "email", "senha", "tipo_usuario_id", "situacao")] UsuarioApi UsuarioApi)
+        public IActionResult CreateOrEdit([Bind("Id", "Nome", "Stuacao")] TipoUsuarioApiModel TipoUsuarioApi)
         {
             if (ModelState.IsValid)
             {
-                if (UsuarioApi.id == 0)
+                if (TipoUsuarioApi.Id == 0)
                 {
-                    UsuarioApi.tipoUsuarioModel = null;
-                    UsuarioApi.dt_cadastro = DateTime.Today;
-                    UsuarioApi.dt_ultimo_acesso = DateTime.Today;
+                    TipoUsuarioApi.DataCadastro = DateTime.Today;
 
-                    string json = JsonConvert.SerializeObject(UsuarioApi);
+                    string json = JsonConvert.SerializeObject(TipoUsuarioApi);
                     var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = _httpClient.PostAsync("User", httpContent).Result;
+                    HttpResponseMessage response = _httpClient.PostAsync("TipoUsuario", httpContent).Result;
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -111,15 +104,15 @@ namespace soulsoft_delivery_asp.Controllers
                         dynamic responseJson = JsonConvert.DeserializeObject(responseString);
                         if (responseJson.status == "Sucesso")
                         {
-                            return Redirect("/TiposProdutos/Index?TiposProdutosMessage=Usuário cadastrado com Sucesso.");
+                            return Redirect("/TiposUsuarios/Index?TiposUsuariosMessage=Tipo de Usuário cadastrado com Sucesso.");
                         }
                     }
                 }
                 else
                 {
-                    string json = JsonConvert.SerializeObject(UsuarioApi);
+                    string json = JsonConvert.SerializeObject(TipoUsuarioApi);
                     var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = _httpClient.PutAsync("User", httpContent).Result;
+                    HttpResponseMessage response = _httpClient.PutAsync("TipoUsuario", httpContent).Result;
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -127,27 +120,25 @@ namespace soulsoft_delivery_asp.Controllers
                         dynamic responseJson = JsonConvert.DeserializeObject(responseString);
                         if (responseJson.status == "Sucesso")
                         {
-                            return Redirect("/TiposProdutos/Index?TiposProdutosMessage=Usuário alterado com Sucesso.");
+                            return Redirect("/TiposUsuarios/Index?TiposUsuariosMessage=Tipo de Usuário alterado com Sucesso.");
                         }
                     }
                 }
             }
-
-            return View(UsuarioApi);
+            return View(TipoUsuarioApi);
         }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
-
-            HttpResponseMessage response = _httpClient.DeleteAsync($"User/{id}").Result;
+            HttpResponseMessage response = _httpClient.DeleteAsync($"TipoUsuario/{id}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var responseString = response.Content.ReadAsStringAsync().Result;
                 dynamic responseJson = JsonConvert.DeserializeObject(responseString);
                 if (responseJson.status == "Sucesso")
                 {
-                    return Redirect("/TiposProdutos/Index?TiposProdutosMessage=Usuário removido com Sucesso.");
+                    return Redirect("/TiposUsuarios/Index?TiposUsuariosMessage=Tipo de Usuário removido com Sucesso.");
                 }
             }
             return RedirectToAction("Index");

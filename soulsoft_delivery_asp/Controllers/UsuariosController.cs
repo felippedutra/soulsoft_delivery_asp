@@ -42,12 +42,12 @@ namespace soulsoft_delivery_asp.Controllers
 
                     //Teste 2
                     JArray jObject = responseJson.conteudo as JArray;
-                    var usuarios = jObject.ToObject<List<UsuarioApi>>();
+                    var usuarios = jObject.ToObject<List<UsuarioApiModel>>();
 
                     return View(usuarios);
                 }
             }
-            return View(new List<UsuarioApi>());
+            return View(new List<UsuarioApiModel>());
         }
 
         [HttpGet]
@@ -63,7 +63,7 @@ namespace soulsoft_delivery_asp.Controllers
 
                     JArray jObject = responseJson.conteudo as JArray;
 
-                    UsuarioApi usuario = new UsuarioApi{
+                    UsuarioApiModel usuario = new UsuarioApiModel{
                         id = responseJson.conteudo[0].id,
                         nome = responseJson.conteudo[0].nome,
                         telefone = responseJson.conteudo[0].telefone,
@@ -79,18 +79,18 @@ namespace soulsoft_delivery_asp.Controllers
                 {
                     //Retorna usuário não encontrado
                     //return NotFound();
-                    return View(new UsuarioApi());
+                    return View(new UsuarioApiModel());
                 }               
             }
             else
             {
-                return View(new UsuarioApi());
+                return View(new UsuarioApiModel());
             }    
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("id", "nome", "telefone", "email", "senha", "tipo_usuario_id", "situacao")] UsuarioApi UsuarioApi)
+        public IActionResult CreateOrEdit([Bind("id", "nome", "telefone", "email", "senha", "tipo_usuario_id", "situacao")] UsuarioApiModel UsuarioApi)
         {
             if (ModelState.IsValid)
             {

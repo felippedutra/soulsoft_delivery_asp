@@ -1,14 +1,24 @@
-﻿@{
-    //ViewData["crumbs"] = "Teste";
-    //ViewData["crumbs_url"] = "Usuarios/Teste";
+﻿@model IEnumerable<soulsoft_delivery_asp.Models.TipoUsuarioApiModel>
+
+@{
     ViewData["title"] = "Tipos de Usuários";
+}
+
+@if (ViewData["TiposUsuariosMessage"] != null)
+{
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2 mr-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+        <div>
+            @ViewData["TiposUsuariosMessage"]
+        </div>
+    </div>
 }
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Listagem de Tipos de Medidas</h3>
+                <h3 class="card-title">Listagem de Tipos de Usuários</h3>
 
                 <div class="card-tools">
                     <div class="input-group input-group-sm">
@@ -29,25 +39,37 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Descrição</th>
+                            <th>Nome</th>
                             <th>Situação</th>
-                            <th>#</th>
+                            <th>Opções</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nome)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Stuacao)
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary btn-sm" asp-controller="TiposUsuarios" asp-action="CreateOrEdit" asp-route-id="@item.Id"><i class="fa fa-pencil-alt"></i></a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="TiposUsuarios" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Deseja remover o Tipo de Usuário selecionado?')"><i class="fa fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                     <tfoot>
                         <tr>
                             <th>#</th>
-                            <th>Descrição</th>
+                            <th>Nome</th>
                             <th>Situação</th>
-                            <th>#</th>
+                            <th>Opções</th>
                         </tr>
                     </tfoot>
                 </table>
