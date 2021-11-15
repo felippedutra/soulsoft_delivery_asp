@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using soulsoft_delivery_asp.Models;
+using soulsoft_delivery_asp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,22 +59,42 @@ namespace soulsoft_delivery_asp.Controllers
                 HttpResponseMessage response = _httpClient.GetAsync($"User/{id}").Result;
                 if (response.IsSuccessStatusCode)
                 {
+                    //Capturando o Usuário
                     var responseString = response.Content.ReadAsStringAsync().Result;
                     dynamic responseJson = JsonConvert.DeserializeObject(responseString);
 
                     JArray jObject = responseJson.conteudo as JArray;
 
-                    UsuarioApiModel usuario = new UsuarioApiModel{
+                    UsuarioApiModel usuario = new UsuarioApiModel
+                    {
                         id = responseJson.conteudo[0].id,
                         nome = responseJson.conteudo[0].nome,
                         telefone = responseJson.conteudo[0].telefone,
                         email = responseJson.conteudo[0].email,
                         senha = responseJson.conteudo[0].senha,
                         tipo_usuario_id = responseJson.conteudo[0].tipo_usuario_id,
-                        situacao = responseJson.conteudo[0].situacao
+                        ativo = responseJson.conteudo[0].ativo
                     };
 
-                    return View(usuario);
+                    var UsuarioViewModel = new UsuarioViewModel();
+                    UsuarioViewModel.Usuario = usuario;
+
+                    //Capturando a lista de Tipos de Usuários
+                    HttpResponseMessage responseTipoUsuario = _httpClient.GetAsync("TipoUsuario/Listar").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseTipoUsuarioString = responseTipoUsuario.Content.ReadAsStringAsync().Result;
+                        dynamic responseTipoUsuarioJson = JsonConvert.DeserializeObject(responseTipoUsuarioString);
+                        if (responseTipoUsuarioJson.status == "Sucesso")
+                        {
+                            JArray jObjectTipoUsuario = responseTipoUsuarioJson.conteudo as JArray;
+                            var TiposUsuarios = jObjectTipoUsuario.ToObject<List<TipoUsuarioApiModel>>();
+
+                            UsuarioViewModel.TiposUsuarios = TiposUsuarios;
+                        }
+                    }
+
+                    return View(UsuarioViewModel);
                 }
                 else
                 {
@@ -90,13 +111,12 @@ namespace soulsoft_delivery_asp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("id", "nome", "telefone", "email", "senha", "tipo_usuario_id", "situacao")] UsuarioApiModel UsuarioApi)
+        public IActionResult CreateOrEdit([Bind("id", "nome", "telefone", "email", "senha", "tipo_usuario_id", "ativo")] UsuarioApiModel UsuarioApi)
         {
             if (ModelState.IsValid)
             {
                 if (UsuarioApi.id == 0)
                 {
-                    UsuarioApi.tipoUsuarioModel = null;
                     UsuarioApi.dt_cadastro = DateTime.Today;
                     UsuarioApi.dt_ultimo_acesso = DateTime.Today;
 

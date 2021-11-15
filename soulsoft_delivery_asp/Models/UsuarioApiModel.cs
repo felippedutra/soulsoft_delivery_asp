@@ -17,12 +17,13 @@ namespace soulsoft_delivery_asp.Models
         public string email { get; set; }
         public DateTime dt_ultimo_acesso { get; set; }
         public DateTime dt_cadastro { get; set; }
-        [Required(ErrorMessage = "É necessário informar a situação")]
-        public string situacao { get; set; }
+        public bool ativo { get; set; }
         [Required(ErrorMessage = "É necessário informar a senha")]
         public string senha { get; set; }
+        public int empresa_id { get; set; }
+        public string empresa { get; set; }
         [Required(ErrorMessage = "É necessário informar o tipo de usuário")]
         public int tipo_usuario_id { get; set; }
-        public string tipoUsuarioModel { get; set; }
+        public virtual TipoUsuarioApiModel tipoUsuarioModel { get; set; }
     }
 }

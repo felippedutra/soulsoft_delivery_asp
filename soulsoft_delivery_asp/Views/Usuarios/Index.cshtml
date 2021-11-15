@@ -1,4 +1,4 @@
-﻿@model IEnumerable<soulsoft_delivery_asp.Models.UsuarioApi>
+﻿@model IEnumerable<soulsoft_delivery_asp.Models.UsuarioApiModel>
 
 @{
     ViewData["title"] = "Usuários";
@@ -43,7 +43,7 @@
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Tipo</th>
-                            <th>Situação</th>
+                            <th>Ativo?</th>
                             <th>Opções</th>
                         </tr>
                     </thead>
@@ -64,10 +64,15 @@
                                     @Html.DisplayFor(modelItem => item.email)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.tipo_usuario_id)
+                                    @Html.DisplayFor(modelItem => item.tipoUsuarioModel.Nome)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.situacao)
+                                    @if(item.ativo == true)
+                                    {
+                                        <i class="fa fa-check text-success"></i>
+                                    }else{
+                                        <i class="fa fa-times text-danger"></i>
+                                    }
                                 </td>
                                 <td>
                                     <a class="btn btn-secondary btn-sm" asp-controller="Usuarios" asp-action="CreateOrEdit" asp-route-id="@item.id"><i class="fa fa-pencil-alt"></i></a>
@@ -83,7 +88,7 @@
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Tipo</th>
-                            <th>Situação</th>
+                            <th>Ativo?</th>
                             <th>Opções</th>
                         </tr>
                     </tfoot>

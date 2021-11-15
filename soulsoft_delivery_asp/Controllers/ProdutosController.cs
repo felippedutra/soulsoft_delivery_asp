@@ -71,7 +71,9 @@ namespace soulsoft_delivery_asp.Controllers
                         email = responseJson.conteudo[0].email,
                         senha = responseJson.conteudo[0].senha,
                         tipo_usuario_id = responseJson.conteudo[0].tipo_usuario_id,
-                        situacao = responseJson.conteudo[0].situacao
+                        ativo = responseJson.conteudo[0].ativo,
+                        empresa_id = responseJson.conteudo[0].empresa_id,
+                        empresa = responseJson.conteudo[0].empresa
                     };
 
                     return View(usuario);
@@ -97,7 +99,7 @@ namespace soulsoft_delivery_asp.Controllers
             {
                 if (UsuarioApi.id == 0)
                 {
-                    UsuarioApi.tipoUsuarioModel = null;
+                    //UsuarioApi.tipoUsuarioModel. = null;
                     UsuarioApi.dt_cadastro = DateTime.Today;
                     UsuarioApi.dt_ultimo_acesso = DateTime.Today;
 

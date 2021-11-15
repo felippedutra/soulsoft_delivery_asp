@@ -67,7 +67,7 @@ namespace soulsoft_delivery_asp.Controllers
                     {
                         Id = responseJson.conteudo[0].id,
                         Nome = responseJson.conteudo[0].nome,
-                        Stuacao = responseJson.conteudo[0].stuacao
+                        ativo = responseJson.conteudo[0].ativo
                     };
                     return View(TipoUsuario);
                 }
