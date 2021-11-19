@@ -45,15 +45,22 @@
                             <option></option>
                             @foreach (var TipoUsuario in Model.TiposUsuarios)
                             {
-                                <option value="TipoUsuario.Id">@Html.DisplayFor(modelItem => TipoUsuario.Nome)</option>
+                                <option value="@TipoUsuario.Id">@Html.DisplayFor(modelItem => TipoUsuario.Nome)</option>
                             }
                         </select>
                         <span asp-validation-for="Usuario.tipo_usuario_id" class="text-danger"></span>
                     </div>
-                    <div class="form-group mb-0">
+                    @*<div class="form-group mb-0">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" asp-for="Usuario.ativo" class="custom-control-input" id="ativo">
                             <label class="custom-control-label" for="situacao">Ativo?</label>
+                            <span asp-validation-for="Usuario.ativo" class="text-danger"></span>
+                        </div>
+                    </div>*@
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" asp-for="Usuario.ativo" class="form-check-input" id="ativo">
+                            <label class="form-check-label" for="exampleCheck1"><b>Ativo?</b></label>
                             <span asp-validation-for="Usuario.ativo" class="text-danger"></span>
                         </div>
                     </div>
