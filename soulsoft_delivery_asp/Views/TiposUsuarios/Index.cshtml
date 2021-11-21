@@ -55,7 +55,14 @@
                                     @Html.DisplayFor(modelItem => item.Nome)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ativo)
+                                    @if (item.ativo == true)
+                                    {
+                                        <i class="fa fa-check text-success"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-times text-danger"></i>
+                                    }
                                 </td>
                                 <td>
                                     <a class="btn btn-secondary btn-sm" asp-controller="TiposUsuarios" asp-action="CreateOrEdit" asp-route-id="@item.Id"><i class="fa fa-pencil-alt"></i></a>

@@ -86,7 +86,7 @@ namespace soulsoft_delivery_asp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("Id", "Nome", "Stuacao")] TipoUsuarioApiModel TipoUsuarioApi)
+        public IActionResult CreateOrEdit([Bind("Id", "Nome", "ativo")] TipoUsuarioApiModel TipoUsuarioApi)
         {
             if (ModelState.IsValid)
             {
