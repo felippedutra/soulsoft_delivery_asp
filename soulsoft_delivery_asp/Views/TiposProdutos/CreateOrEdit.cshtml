@@ -1,4 +1,6 @@
-﻿@{
+﻿@model soulsoft_delivery_asp.Models.TipoProdutoApiModel
+
+@{
     ViewData["breadcrumb"] = "TiposProdutos";
     ViewData["breadcrumb_url"] = "/TiposProdutos/Index";
     ViewData["title"] = "Cadastrar";
@@ -16,22 +18,24 @@
             <!-- form start -->
             <form method="post" asp-controller="TiposProdutos" asp-action="CreateOrEdit">
                 <div class="card-body">
-                    <input type="hidden" name="id" id="id" value="">
+                    <input type="hidden" asp-for="Id" id="Id">
                     <div class="form-group">
-                        <label for="descricao">Descrição</label>
-                        <input type="text" name="descricao" class="form-control" placeholder="Digite a Descrição">
+                        <label for="descricao">Nome</label>
+                        <input type="text" asp-for="Nome" id="Nome" class="form-control" placeholder="Digite o Nome">
+                        <span asp-validation-for="Nome" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-0">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="ativo" class="custom-control-input">
-                            <label class="custom-control-label" for="ativo">Ativo?</label>
+                            <input type="checkbox" asp-for="Ativo" id="Ativo" class="custom-control-input">
+                            <label class="custom-control-label" for="Ativo">Ativo?</label>
+                            <span asp-validation-for="Ativo" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Salvar</button>
-                    <a href="#" class="btn btn-danger">Cancelar</a>
+                    <a asp-controller="TiposProdutos" asp-action="Index" class="btn btn-danger">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -45,3 +49,7 @@
     <!--/.col (right) -->
 </div>
 <!-- /.row -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
