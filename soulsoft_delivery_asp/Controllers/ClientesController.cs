@@ -47,11 +47,11 @@ namespace soulsoft_delivery_asp.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateOrEdit(int id = 0)
+        public IActionResult CreateOrEdit(int Id = 0)
         {
-            if (id != 0)
+            if (Id != 0)
             {
-                HttpResponseMessage response = _httpClient.GetAsync($"Cliente/{id}").Result;
+                HttpResponseMessage response = _httpClient.GetAsync($"Cliente/{Id}").Result;
                 if (response.IsSuccessStatusCode)
                 {
                     var responseString = response.Content.ReadAsStringAsync().Result;
@@ -61,12 +61,12 @@ namespace soulsoft_delivery_asp.Controllers
 
                     ClienteApiModel cliente = new ClienteApiModel
                     {
-                        id = responseJson.conteudo[0].id,
-                        Nome = responseJson.conteudo[0].nome,
+                        Id = responseJson.conteudo[0].Id,
+                        Nome = responseJson.conteudo[0].Nome,
                         Telefone = responseJson.conteudo[0].telefone,
-                        email = responseJson.conteudo[0].email,
-                        senha = responseJson.conteudo[0].senha,
-                        situacao = responseJson.conteudo[0].situacao
+                        Email = responseJson.conteudo[0].email,
+                        Senha = responseJson.conteudo[0].Senha,
+                        Ativo = responseJson.conteudo[0].Ativo
                     };
 
                     return View(cliente);
@@ -86,13 +86,13 @@ namespace soulsoft_delivery_asp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("id", "Nome", "Telefone", "email", "senha", "situacao")] ClienteApiModel ClienteApi)
+        public IActionResult CreateOrEdit([Bind("Id", "Nome", "Telefone", "email", "Senhaa", "Situacao")] ClienteApiModel ClienteApi)
         {
             if (ModelState.IsValid)
             {
-                if (ClienteApi.id == 0)
+                if (ClienteApi.Id == 0)
                 {
-                    ClienteApi.dt_cadastro = DateTime.Today;
+                    ClienteApi.DtCadastro = DateTime.Today;
 
                     string json = JsonConvert.SerializeObject(ClienteApi);
                     var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -129,17 +129,17 @@ namespace soulsoft_delivery_asp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int Id)
         {
 
-            HttpResponseMessage response = _httpClient.DeleteAsync($"Cliente/{id}").Result;
+            HttpResponseMessage response = _httpClient.DeleteAsync($"Cliente/{Id}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var responseString = response.Content.ReadAsStringAsync().Result;
                 dynamic responseJson = JsonConvert.DeserializeObject(responseString);
                 if (responseJson.status == "Sucesso")
                 {
-                    return Redirect("/Clientes/Index?ClientesMessage=Cliente removido com Sucesso.");
+                    return Redirect("/Clientes/Index?ClientesMessage=Cliente removIdo com Sucesso.");
                 }
             }
             return RedirectToAction("Index");

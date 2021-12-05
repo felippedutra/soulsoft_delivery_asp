@@ -18,37 +18,37 @@
             <!-- form start -->
             <form method="post" asp-controller="Usuarios" asp-action="CreateOrEdit">
                 <div class="card-body">
-                    <input type="hidden" id="id" asp-for="Usuario.id">
+                    <input type="hidden" id="id" asp-for="Usuario.Id">
                     <div class="form-group">
                         <label for="nome">Nome</label>
-                        <input type="text" class="form-control" id="nome" asp-for="Usuario.nome" placeholder="Digite o Nome">
-                        <span asp-validation-for="Usuario.nome" class="text-danger"></span>
+                        <input type="text" class="form-control" id="Nome" asp-for="Usuario.Nome" placeholder="Digite o Nome">
+                        <span asp-validation-for="Usuario.Nome" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="text" class="form-control telefone" id="telefone" asp-for="Usuario.telefone" placeholder="Digite o Telefone">
-                        <span asp-validation-for="Usuario.telefone" class="text-danger"></span>
+                        <input type="text" class="form-control telefone" id="Telefone" asp-for="Usuario.Telefone" placeholder="Digite o Telefone">
+                        <span asp-validation-for="Usuario.Telefone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" asp-for="Usuario.email" placeholder="Digite o Email">
-                        <span asp-validation-for="Usuario.email" class="text-danger"></span>
+                        <input type="email" class="form-control" id="Email" asp-for="Usuario.Email" placeholder="Digite o Email">
+                        <span asp-validation-for="Usuario.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="senha">Senha</label>
-                        <input type="text" class="form-control senha" id="senha" asp-for="Usuario.senha" placeholder="Digite a Senha">
-                        <span asp-validation-for="Usuario.senha" class="text-danger"></span>
+                        <input type="text" class="form-control senha" id="Senha" asp-for="Usuario.Senha" placeholder="Digite a Senha">
+                        <span asp-validation-for="Usuario.Senha" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="tipo_usuario_id">Tipo de Usuário</label>
-                        <select asp-for="Usuario.tipo_usuario_id" class="form-control" id="tipo_usuario_id">
+                        <select asp-for="Usuario.TipoUsuarioId" class="form-control" id="TipoUsuarioId">
                             <option></option>
                             @foreach (var TipoUsuario in Model.TiposUsuarios)
                             {
                                 <option value="@TipoUsuario.Id">@Html.DisplayFor(modelItem => TipoUsuario.Nome)</option>
                             }
                         </select>
-                        <span asp-validation-for="Usuario.tipo_usuario_id" class="text-danger"></span>
+                        <span asp-validation-for="Usuario.TipoUsuarioId" class="text-danger"></span>
                     </div>
                     @*<div class="form-group mb-0">
                         <div class="custom-control custom-checkbox">
@@ -66,9 +66,9 @@
                     </div>*@
                     <div class="form-group mb-0">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" asp-for="Usuario.ativo" class="custom-control-input" id="ativo">
+                            <input type="checkbox" asp-for="Usuario.Ativo" class="custom-control-input" id="ativo">
                             <label class="custom-control-label" for="ativo">Ativo?</label>
-                            <span asp-validation-for="Usuario.ativo" class="text-danger"></span>
+                            <span asp-validation-for="Usuario.Ativo" class="text-danger"></span>
                         </div>
                     </div>
                 </div>

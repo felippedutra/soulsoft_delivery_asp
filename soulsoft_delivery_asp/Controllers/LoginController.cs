@@ -22,9 +22,13 @@ namespace soulsoft_delivery_asp.Controllers
         private readonly HttpClient _httpClient;
         //Definindo o nome das variaveis de sessão
         const string SessionToken = "_token";
-        const string SessionNome = "_nome";
-        const string SessionTipoAcessoId = "_tipoAcessoId";
+        const string SessionDataTokenGerado = "_dataTokenGerado";
+        const string SessionUsuarioId = "_usuarioId";
+        const string SessionUsuarioNome = "_usuarioNome";
+        const string SessionTipoUsuarioId = "_tipoUsuarioId";
+        const string SessionTipoUsuarioNome = "_tipoUsuarioNome";
         const string SessionEmpresaId = "_empresaId";
+        const string SessionEmpresaNome = "_empresaNome";
 
         public LoginController()
         {
@@ -44,7 +48,7 @@ namespace soulsoft_delivery_asp.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index([Bind("usuario", "Senha")] LoginApiModel LoginApi)
+        public IActionResult Index([Bind("Email", "Senha")] LoginApiModel LoginApi)
         {
             if (ModelState.IsValid)
             {
@@ -58,19 +62,31 @@ namespace soulsoft_delivery_asp.Controllers
                     dynamic responseJson = JsonConvert.DeserializeObject(responseString);
                     if (responseJson.status == "Sucesso")
                     {
+
                         string token = responseJson.conteudo[0].token;
-                        //Criando as variaveis de sessão
+                        string dataTokenGerado = responseJson.conteudo[0].dataTokenGerado;
+                        string usuarioId = responseJson.conteudo[0].usuarioId;
+                        string usuarioNome = responseJson.conteudo[0].usuarioNome;
+                        string tipoUsuarioId = responseJson.conteudo[0].tipoUsuarioId;
+                        string tipoUsuarioNome = responseJson.conteudo[0].tipoUsuarioNome;
+                        string empresaId = responseJson.conteudo[0].empresaId;
+                        string empresaNome = responseJson.conteudo[0].empresaNome;
+
                         HttpContext.Session.SetString(SessionToken, token);
-                        //HttpContext.Session.SetString(SessionNome, "");
-                        //HttpContext.Session.SetString(SessionTipoAcessoId, "");
-                        //HttpContext.Session.SetString(SessionEmpresaId, "");
+                        HttpContext.Session.SetString(SessionDataTokenGerado, dataTokenGerado);
+                        HttpContext.Session.SetString(SessionUsuarioId, usuarioId);
+                        HttpContext.Session.SetString(SessionUsuarioNome, usuarioNome);
+                        HttpContext.Session.SetString(SessionTipoUsuarioId, tipoUsuarioId);
+                        HttpContext.Session.SetString(SessionTipoUsuarioNome, tipoUsuarioNome);
+                        HttpContext.Session.SetString(SessionEmpresaId, empresaId);
+                        HttpContext.Session.SetString(SessionEmpresaNome, empresaNome);
 
                         //Capturando as variaveis de sessão
                         //HttpContextAccessor.HttpContext.Session.GetString("_token")
 
                         return Redirect("/Home/Index");
                     }
-                    ViewData["LoginMessage"] = "Email ou senha incorreta.";
+                    ViewData["LoginMessage"] = "Email ou Senha incorreta.";
                 }
                 else
                 {

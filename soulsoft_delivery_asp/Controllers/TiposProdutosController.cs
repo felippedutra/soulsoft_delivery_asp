@@ -49,17 +49,17 @@ namespace soulsoft_delivery_asp.Controllers
             return View(new List<TipoProdutoApiModel>());
         }
 
-        [HttpGet]
-        public IActionResult CreateOrEdit(int id = 0)
-        {
-            if (id != 0)
-            {
-                return View();
-            }
-            else
-            {
-                return View();
-            }
-        }
+        //[HttpGet]
+        //public IActionResult CreateOrEdit(int id = 0)
+        //{
+        //    if (id != 0)
+        //    {
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }

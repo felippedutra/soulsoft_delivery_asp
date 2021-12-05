@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace soulsoft_delivery_asp.Controllers
 {
-    public class TiposProdutosController : Controller
+    public class TiposMedidasController : Controller
     {
         public IActionResult Index()
         {

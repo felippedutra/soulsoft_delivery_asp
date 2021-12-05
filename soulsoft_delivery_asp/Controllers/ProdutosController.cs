@@ -51,11 +51,11 @@ namespace soulsoft_delivery_asp.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateOrEdit(int id = 0)
+        public IActionResult CreateOrEdit(int Id = 0)
         {
-            if (id != 0)
+            if (Id != 0)
             {
-                HttpResponseMessage response = _httpClient.GetAsync($"User/{id}").Result;
+                HttpResponseMessage response = _httpClient.GetAsync($"User/{Id}").Result;
                 if (response.IsSuccessStatusCode)
                 {
                     var responseString = response.Content.ReadAsStringAsync().Result;
@@ -65,15 +65,14 @@ namespace soulsoft_delivery_asp.Controllers
 
                     UsuarioApiModel usuario = new UsuarioApiModel
                     {
-                        id = responseJson.conteudo[0].id,
-                        nome = responseJson.conteudo[0].nome,
-                        telefone = responseJson.conteudo[0].telefone,
-                        email = responseJson.conteudo[0].email,
-                        senha = responseJson.conteudo[0].senha,
-                        tipo_usuario_id = responseJson.conteudo[0].tipo_usuario_id,
-                        ativo = responseJson.conteudo[0].ativo,
-                        empresa_id = responseJson.conteudo[0].empresa_id,
-                        empresa = responseJson.conteudo[0].empresa
+                        Id = responseJson.conteudo[0].Id,
+                        Nome = responseJson.conteudo[0].Nome,
+                        Telefone = responseJson.conteudo[0].Telefone,
+                        Email = responseJson.conteudo[0].Email,
+                        Senha = responseJson.conteudo[0].Senha,
+                        TipoUsuarioId = responseJson.conteudo[0].TipoUsuarioId,
+                        Ativo = responseJson.conteudo[0].Ativo,
+                        EmpresaId = responseJson.conteudo[0].EmpresaId,
                     };
 
                     return View(usuario);
@@ -93,15 +92,15 @@ namespace soulsoft_delivery_asp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("id", "nome", "telefone", "email", "senha", "tipo_usuario_id", "situacao")] UsuarioApiModel UsuarioApi)
+        public IActionResult CreateOrEdit([Bind("Id", "Nome", "Telefone", "Email", "Senha", "TipoUsuarioId", "situacao")] UsuarioApiModel UsuarioApi)
         {
             if (ModelState.IsValid)
             {
-                if (UsuarioApi.id == 0)
+                if (UsuarioApi.Id == 0)
                 {
                     //UsuarioApi.tipoUsuarioModel. = null;
-                    UsuarioApi.dt_cadastro = DateTime.Today;
-                    UsuarioApi.dt_ultimo_acesso = DateTime.Today;
+                    UsuarioApi.DtCadastro = DateTime.Today;
+                    UsuarioApi.DtUltimoAcesso = DateTime.Today;
 
                     string json = JsonConvert.SerializeObject(UsuarioApi);
                     var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -139,17 +138,17 @@ namespace soulsoft_delivery_asp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int Id)
         {
 
-            HttpResponseMessage response = _httpClient.DeleteAsync($"User/{id}").Result;
+            HttpResponseMessage response = _httpClient.DeleteAsync($"User/{Id}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var responseString = response.Content.ReadAsStringAsync().Result;
                 dynamic responseJson = JsonConvert.DeserializeObject(responseString);
                 if (responseJson.status == "Sucesso")
                 {
-                    return Redirect("/Usuarios/Index?UsuariosMessage=Usuário removido com Sucesso.");
+                    return Redirect("/Usuarios/Index?UsuariosMessage=Usuário removIdo com Sucesso.");
                 }
             }
             return RedirectToAction("Index");

@@ -18,7 +18,7 @@
             <!-- form start -->
             <form method="post" asp-controller="Clientes" asp-action="CreateOrEdit">
                 <div class="card-body">
-                    <input type="hidden" name="id" id="id" asp-for="id">
+                    <input type="hidden" name="Id" id="Id" asp-for="Id">
                     <div class="form-group">
                         <label for="nome">Nome</label>
                         <input type="text" asp-for="Nome" class="form-control" id="nome" placeholder="Digite o nome completo">
@@ -31,15 +31,15 @@
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" asp-for="email" class="form-control" id="email" placeholder="Digite o Email">
-                        <span asp-validation-for="email" class="text-danger"></span>
+                        <input type="email" asp-for="Email" class="form-control" id="email" placeholder="Digite o Email">
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="senha">Senha</label>
-                        <input type="text" asp-for="senha" class="form-control senha" id="senha" placeholder="Digite a Senha">
-                        <span asp-validation-for="senha" class="text-danger"></span>
+                        <input type="text" asp-for="Senha" class="form-control senha" id="senha" placeholder="Digite a Senha">
+                        <span asp-validation-for="Senha" class="text-danger"></span>
                     </div>
-                    <div class="form-group mb-0">
+                    @*<div class="form-group mb-0">
                         <label for="situacao">Situação</label>
                         <select asp-for="situacao" class="form-control" id="situacao">
                             <option></option>
@@ -47,7 +47,7 @@
                             <option value="Inativo">Inativo</option>
                         </select>
                         <span asp-validation-for="situacao" class="text-danger"></span>
-                    </div>
+                    </div>*@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">

@@ -67,7 +67,7 @@ namespace soulsoft_delivery_asp.Controllers
                     {
                         Id = responseJson.conteudo[0].id,
                         Nome = responseJson.conteudo[0].nome,
-                        ativo = responseJson.conteudo[0].ativo
+                        Ativo = responseJson.conteudo[0].ativo
                     };
                     return View(TipoUsuario);
                 }
@@ -92,7 +92,7 @@ namespace soulsoft_delivery_asp.Controllers
             {
                 if (TipoUsuarioApi.Id == 0)
                 {
-                    TipoUsuarioApi.DataCadastro = DateTime.Today;
+                    TipoUsuarioApi.DtCadastro = DateTime.Today;
 
                     string json = JsonConvert.SerializeObject(TipoUsuarioApi);
                     var httpContent = new StringContent(json, Encoding.UTF8, "application/json");

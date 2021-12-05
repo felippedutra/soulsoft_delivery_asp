@@ -12,7 +12,8 @@ namespace soulsoft_delivery_asp.Models
         [Required(ErrorMessage = "Informe o Nome")]
         [StringLength(150)]
         public string Nome { get; set; }
-        public DateTime Dt_cadastro { get; set; }
+        public DateTime DtCadastro { get; set; }
         public bool Ativo { get; set; }
+        public int EmpresaId { get; set; }
     }
 }

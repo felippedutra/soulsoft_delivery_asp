@@ -52,22 +52,22 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.id)
+                                    @Html.DisplayFor(modelItem => item.Id)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.nome)
+                                    @Html.DisplayFor(modelItem => item.Nome)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.telefone)
+                                    @Html.DisplayFor(modelItem => item.Telefone)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.email)
+                                    @Html.DisplayFor(modelItem => item.Email)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.tipoUsuarioModel.Nome)
+                                    @Html.DisplayFor(modelItem => item.TipoUsuario.Nome)
                                 </td>
                                 <td>
-                                    @if(item.ativo == true)
+                                    @if(item.Ativo == true)
                                     {
                                         <i class="fa fa-check text-success"></i>
                                     }else{
@@ -75,8 +75,8 @@
                                     }
                                 </td>
                                 <td>
-                                    <a class="btn btn-secondary btn-sm" asp-controller="Usuarios" asp-action="CreateOrEdit" asp-route-id="@item.id"><i class="fa fa-pencil-alt"></i></a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="Usuarios" asp-action="Delete" asp-route-id="@item.id" onclick="return confirm('Deseja remover o Usuário selecionado?')"><i class="fa fa-trash-alt"></i></a>
+                                    <a class="btn btn-secondary btn-sm" asp-controller="Usuarios" asp-action="CreateOrEdit" asp-route-id="@item.Id"><i class="fa fa-pencil-alt"></i></a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="Usuarios" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Deseja remover o Usuário selecionado?')"><i class="fa fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         }

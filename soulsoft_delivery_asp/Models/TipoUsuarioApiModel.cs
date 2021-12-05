@@ -12,8 +12,8 @@ namespace soulsoft_delivery_asp.Models
         [StringLength(100)]
         [Required(ErrorMessage = "Informe o nome")]
         public string Nome { get; set; }
-        public bool ativo { get; set; }
-        public DateTime DataCadastro { get; set; }
-        public List<UsuarioApiModel> Usuarios { get; set; }
+        public bool Ativo { get; set; }
+        public DateTime DtCadastro { get; set; }
+        public int EmpresaId { get; set; }
     }
 }

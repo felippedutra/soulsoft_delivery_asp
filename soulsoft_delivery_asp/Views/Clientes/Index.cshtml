@@ -11,6 +11,7 @@
         <div>
             @ViewData["ClientesMessage"]
         </div>
+
     </div>
 }
 
@@ -51,7 +52,7 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.id)
+                                    @Html.DisplayFor(modelItem => item.Id)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Nome)
@@ -60,14 +61,14 @@
                                     @Html.DisplayFor(modelItem => item.Telefone)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.email)
+                                    @Html.DisplayFor(modelItem => item.Email)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.situacao)
+                                    @Html.DisplayFor(modelItem => item.Ativo)
                                 </td>
                                 <td>
-                                    <a class="btn btn-secondary btn-sm" asp-controller="Clientes" asp-action="CreateOrEdit" asp-route-id="@item.id"><i class="fa fa-pencil-alt"></i></a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="Clientes" asp-action="Delete" asp-route-id="@item.id" onclick="return confirm('Deseja remover o Cliente selecionado?')"><i class="fa fa-trash-alt"></i></a>
+                                    <a class="btn btn-secondary btn-sm" asp-controller="Clientes" asp-action="CreateOrEdit" asp-route-id="@item.Id"><i class="fa fa-pencil-alt"></i></a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="Clientes" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Deseja remover o Cliente selecionado?')"><i class="fa fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         }

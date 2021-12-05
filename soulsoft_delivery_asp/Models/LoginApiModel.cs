@@ -8,8 +8,8 @@ namespace soulsoft_delivery_asp.Models
 {
     public class LoginApiModel
     {
-        [Required(ErrorMessage ="Informe o Usuário")]
-        public string usuario { get; set; }
+        [Required(ErrorMessage ="Informe o Email")]
+        public string Email { get; set; }
         [Required(ErrorMessage = "Informe a Senha")]
         public string Senha { get; set; }
     }
