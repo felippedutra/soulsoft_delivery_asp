@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using soulsoft_delivery_asp.Models;
@@ -16,8 +18,10 @@ namespace soulsoft_delivery_asp.Controllers
     public class UsuariosController : Controller
     {
         private readonly HttpClient _httpClient;
+
         public UsuariosController()
         {
+            //Metodo Client para consumir Api's
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _httpClient.BaseAddress = new System.Uri("https://www.soulsoft.tec.br/api/");
@@ -134,8 +138,13 @@ namespace soulsoft_delivery_asp.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                //Capturando o Usuário
                 UsuarioApiModel Usuario = new UsuarioApiModel();
                 Usuario = UsuarioViewModel.Usuario;
+
+                //Vinculando o Usuário a empresa
+                Usuario.EmpresaId =(int) HttpContext.Session.GetInt32("_empresaId");
 
                 if (Usuario.Id == 0)
                 {

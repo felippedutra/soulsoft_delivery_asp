@@ -62,27 +62,26 @@ namespace soulsoft_delivery_asp.Controllers
                     dynamic responseJson = JsonConvert.DeserializeObject(responseString);
                     if (responseJson.status == "Sucesso")
                     {
-
                         string token = responseJson.conteudo[0].token;
                         string dataTokenGerado = responseJson.conteudo[0].dataTokenGerado;
-                        string usuarioId = responseJson.conteudo[0].usuarioId;
+                        int usuarioId = responseJson.conteudo[0].usuarioId;
                         string usuarioNome = responseJson.conteudo[0].usuarioNome;
-                        string tipoUsuarioId = responseJson.conteudo[0].tipoUsuarioId;
+                        int tipoUsuarioId = responseJson.conteudo[0].tipoUsuarioId;
                         string tipoUsuarioNome = responseJson.conteudo[0].tipoUsuarioNome;
-                        string empresaId = responseJson.conteudo[0].empresaId;
+                        int empresaId = responseJson.conteudo[0].empresaId;
                         string empresaNome = responseJson.conteudo[0].empresaNome;
 
                         HttpContext.Session.SetString(SessionToken, token);
                         HttpContext.Session.SetString(SessionDataTokenGerado, dataTokenGerado);
-                        HttpContext.Session.SetString(SessionUsuarioId, usuarioId);
+                        HttpContext.Session.SetInt32(SessionUsuarioId, usuarioId);
                         HttpContext.Session.SetString(SessionUsuarioNome, usuarioNome);
-                        HttpContext.Session.SetString(SessionTipoUsuarioId, tipoUsuarioId);
+                        HttpContext.Session.SetInt32(SessionTipoUsuarioId, tipoUsuarioId);
                         HttpContext.Session.SetString(SessionTipoUsuarioNome, tipoUsuarioNome);
-                        HttpContext.Session.SetString(SessionEmpresaId, empresaId);
+                        HttpContext.Session.SetInt32(SessionEmpresaId, empresaId);
                         HttpContext.Session.SetString(SessionEmpresaNome, empresaNome);
 
                         //Capturando as variaveis de sessão
-                        //HttpContextAccessor.HttpContext.Session.GetString("_token")
+                        //var token = HttpContext.Session.GetString("_token");
 
                         return Redirect("/Home/Index");
                     }
