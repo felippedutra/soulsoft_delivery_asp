@@ -35,7 +35,9 @@ namespace soulsoft_delivery_asp.Controllers
                 ViewData["UsuariosMessage"] = UsuariosMessage;
             }
 
-            HttpResponseMessage response = _httpClient.GetAsync("User/Listar").Result;
+            int EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
+
+            HttpResponseMessage response = _httpClient.GetAsync($"Usuario/Listar/{EmpresaId}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var responseString = response.Content.ReadAsStringAsync().Result;
@@ -63,7 +65,7 @@ namespace soulsoft_delivery_asp.Controllers
 
             if (Id != 0)
             {
-                HttpResponseMessage response = _httpClient.GetAsync($"User/{Id}").Result;
+                HttpResponseMessage response = _httpClient.GetAsync($"Usuario/{Id}").Result;
                 if (response.IsSuccessStatusCode)
                 {
                     //Capturando o Usuário
@@ -74,13 +76,13 @@ namespace soulsoft_delivery_asp.Controllers
 
                     UsuarioApiModel Usuario = new UsuarioApiModel
                     {
-                        Id = responseJson.conteudo[0].Id,
-                        Nome = responseJson.conteudo[0].Nome,
-                        Telefone = responseJson.conteudo[0].Telefone,
-                        Email = responseJson.conteudo[0].Email,
-                        Senha = responseJson.conteudo[0].Senha,
-                        TipoUsuarioId = responseJson.conteudo[0].TipoUsuarioId,
-                        Ativo = responseJson.conteudo[0].Ativo
+                        Id = responseJson.conteudo[0].id,
+                        Nome = responseJson.conteudo[0].nome,
+                        Telefone = responseJson.conteudo[0].telefone,
+                        Email = responseJson.conteudo[0].email,
+                        Senha = responseJson.conteudo[0].senha,
+                        TipoUsuarioId = responseJson.conteudo[0].tipoUsuarioId,
+                        Ativo = responseJson.conteudo[0].ativo
                     };
 
                     UsuarioViewModel.Usuario = Usuario;
@@ -153,7 +155,7 @@ namespace soulsoft_delivery_asp.Controllers
 
                     string json = JsonConvert.SerializeObject(Usuario);
                     var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = _httpClient.PostAsync("User", httpContent).Result;
+                    HttpResponseMessage response = _httpClient.PostAsync("Usuario", httpContent).Result;
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -169,7 +171,7 @@ namespace soulsoft_delivery_asp.Controllers
                 {
                     string json = JsonConvert.SerializeObject(Usuario);
                     var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = _httpClient.PutAsync("User", httpContent).Result;
+                    HttpResponseMessage response = _httpClient.PutAsync("Usuario", httpContent).Result;
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -190,14 +192,14 @@ namespace soulsoft_delivery_asp.Controllers
         public IActionResult Delete(int Id)
         {
 
-            HttpResponseMessage response = _httpClient.DeleteAsync($"User/{Id}").Result;
+            HttpResponseMessage response = _httpClient.DeleteAsync($"Usuario/{Id}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var responseString = response.Content.ReadAsStringAsync().Result;
                 dynamic responseJson = JsonConvert.DeserializeObject(responseString);
                 if (responseJson.status == "Sucesso")
                 {
-                    return Redirect("/Usuarios/Index?UsuariosMessage=Usuário removIdo com Sucesso.");
+                    return Redirect("/Usuarios/Index?UsuariosMessage=Usuário removido com Sucesso.");
                 }
             }
             return RedirectToAction("Index");
