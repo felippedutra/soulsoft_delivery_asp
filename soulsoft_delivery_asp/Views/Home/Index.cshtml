@@ -1,8 +1,53 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
     ViewData["title"] = "Home";
 }
 
-<div class="text-center">
+<div class="container">
+    <h3>Sessão Atual</h3>
+    <table border="1" class="table-responsive">
+        <tr>
+            <td>Nome</td>
+            <td>Valor</td>
+        </tr>
+        <tr>
+            <td>_token</td>
+            <td>@HttpContextAccessor.HttpContext.Session.GetString("_token")</td>
+        </tr>
+        <tr>
+            <td>_dataTokenGerado</td>
+            <td>@HttpContextAccessor.HttpContext.Session.GetString("_dataTokenGerado")</td>
+        </tr>
+        <tr>
+            <td>_usuarioId</td>
+            <td>@HttpContextAccessor.HttpContext.Session.GetInt32("_usuarioId")</td>
+        </tr>
+        <tr>
+            <td>_usuarioNome</td>
+            <td>@HttpContextAccessor.HttpContext.Session.GetString("_usuarioNome")</td>
+        </tr>
+        <tr>
+            <td>_tipoUsuarioId</td>
+            <td>@HttpContextAccessor.HttpContext.Session.GetInt32("_tipoUsuarioId")</td>
+        </tr>
+        <tr>
+            <td>_tipoUsuarioNome</td>
+            <td>@HttpContextAccessor.HttpContext.Session.GetString("_tipoUsuarioNome")</td>
+        </tr>
+        <tr>
+            <td>_empresaId</td>
+            <td>@HttpContextAccessor.HttpContext.Session.GetInt32("_empresaId")</td>
+        </tr>
+        <tr>
+            <td>_empresaNome</td>
+            <td>@HttpContextAccessor.HttpContext.Session.GetString("_empresaNome")</td>
+        </tr>
+    </table>
+</div>
+
+@*<div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+</div>*@
