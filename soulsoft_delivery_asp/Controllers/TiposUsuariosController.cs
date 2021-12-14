@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using soulsoft_delivery_asp.Models;
@@ -30,7 +31,10 @@ namespace soulsoft_delivery_asp.Controllers
                 ViewData["TiposUsuariosMessage"] = TiposUsuariosMessage;
             }
 
-            HttpResponseMessage response = _httpClient.GetAsync("TipoUsuario/Listar").Result;
+            //Obtendo o EmpresaId
+            int EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
+
+            HttpResponseMessage response = _httpClient.GetAsync($"TipoUsuario/Listar/{EmpresaId}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var responseString = response.Content.ReadAsStringAsync().Result;
@@ -86,10 +90,13 @@ namespace soulsoft_delivery_asp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("Id", "Nome", "ativo")] TipoUsuarioApiModel TipoUsuarioApi)
+        public IActionResult CreateOrEdit([Bind("Id", "Nome", "Ativo")] TipoUsuarioApiModel TipoUsuarioApi)
         {
             if (ModelState.IsValid)
             {
+                //Vinculando o Usuário a empresa
+                TipoUsuarioApi.EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
+
                 if (TipoUsuarioApi.Id == 0)
                 {
                     TipoUsuarioApi.DtCadastro = DateTime.Today;

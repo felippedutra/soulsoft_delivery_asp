@@ -35,6 +35,7 @@ namespace soulsoft_delivery_asp.Controllers
                 ViewData["UsuariosMessage"] = UsuariosMessage;
             }
 
+            //Obtendo o EmpresaId
             int EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
 
             HttpResponseMessage response = _httpClient.GetAsync($"Usuario/Listar/{EmpresaId}").Result;
@@ -49,9 +50,9 @@ namespace soulsoft_delivery_asp.Controllers
 
                     //Teste 2
                     JArray jObject = responseJson.conteudo as JArray;
-                    var usuarios = jObject.ToObject<List<UsuarioApiModel>>();
+                    var Usuarios = jObject.ToObject<List<UsuarioApiModel>>();
 
-                    return View(usuarios);
+                    return View(Usuarios);
                 }
             }
             return View(new List<UsuarioApiModel>());
