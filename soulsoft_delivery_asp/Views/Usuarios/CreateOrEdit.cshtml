@@ -36,12 +36,12 @@
                     </div>
                     <div class="form-group">
                         <label for="senha">Senha</label>
-                        <input type="text" class="form-control senha" id="Senha" asp-for="Usuario.Senha" placeholder="Digite a Senha">
+                        <input class="form-control" asp-for="Usuario.Senha" placeholder="Digite a Senha">
                         <span asp-validation-for="Usuario.Senha" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="tipo_usuario_id">Tipo de Usuário</label>
-                        <select asp-for="Usuario.TipoUsuarioId" class="form-control" id="TipoUsuarioId">
+                        <select asp-for="Usuario.TipoUsuarioId" class="form-control" id="TipoUsuarissoId">
                             <option></option>
                             @foreach (var TipoUsuario in Model.TiposUsuarios)
                             {

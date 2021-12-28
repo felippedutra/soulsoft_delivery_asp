@@ -19,6 +19,7 @@ namespace soulsoft_delivery_asp.Models
         public DateTime DtCadastro { get; set; }
         public bool Ativo { get; set; }
         [Required(ErrorMessage = "É necessário informar a senha")]
+        [DataType(DataType.Password)]
         public string Senha { get; set; }
         public int EmpresaId { get; set; }
         [Required(ErrorMessage = "É necessário informar o tipo de usuário")]

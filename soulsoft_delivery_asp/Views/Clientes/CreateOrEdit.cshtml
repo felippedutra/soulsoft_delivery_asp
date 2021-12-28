@@ -1,4 +1,4 @@
-﻿@model soulsoft_delivery_asp.Models.ClienteApiModel
+﻿@model soulsoft_delivery_asp.ViewModels.ClienteViewModel
 
 @{
     ViewData["breadcrumb"] = "Clientes";
@@ -12,47 +12,88 @@
         <!-- jquery validation -->
         <div class="card card-secundary">
             <div class="card-header">
-                <h3 class="card-title">Dados do Usuário</h3>
+                <h3 class="card-title">Dados do Cliente</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
             <form method="post" asp-controller="Clientes" asp-action="CreateOrEdit">
                 <div class="card-body">
-                    <input type="hidden" name="Id" id="Id" asp-for="Id">
+
+                    <input type="hidden" asp-for="Cliente.Id">
+                    <input type="hidden" asp-for="Cliente.EmpresaId">
+                    <input type="hidden" asp-for="Endereco.Id">
+                    <input type="hidden" asp-for="Endereco.TipoEnderecoId">
+
                     <div class="form-group">
-                        <label for="nome">Nome</label>
-                        <input type="text" asp-for="Nome" class="form-control" id="nome" placeholder="Digite o nome completo">
-                        <span asp-validation-for="Nome" class="text-danger"></span>
+                        <label for="nome">Nome*</label>
+                        <input type="text" asp-for="Cliente.Nome" class="form-control" placeholder="Digite o nome completo">
+                        <span asp-validation-for="Cliente.Nome" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label for="telefone">Telefone</label>
-                        <input type="text" asp-for="Telefone" class="form-control telefone" id="telefone" placeholder="Digite o Telefone">
-                        <span asp-validation-for="Telefone" class="text-danger"></span>
+                        <label for="telefone">Telefone*</label>
+                        <input type="text" asp-for="Cliente.Telefone" class="form-control telefone" placeholder="Digite o Telefone">
+                        <span asp-validation-for="Cliente.Telefone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" asp-for="Email" class="form-control" id="email" placeholder="Digite o Email">
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <input type="email" asp-for="Cliente.Email" class="form-control" placeholder="Digite o Email">
+                        <span asp-validation-for="Cliente.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label for="senha">Senha</label>
-                        <input type="text" asp-for="Senha" class="form-control senha" id="senha" placeholder="Digite a Senha">
-                        <span asp-validation-for="Senha" class="text-danger"></span>
+                        <label for="senha">Bairro*</label>
+                        <input type="text" asp-for="Endereco.Bairro" class="form-control" placeholder="Digite o Bairro">
+                        <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
                     </div>
-                    @*<div class="form-group mb-0">
-                        <label for="situacao">Situação</label>
-                        <select asp-for="situacao" class="form-control" id="situacao">
-                            <option></option>
-                            <option value="Ativo">Ativo</option>
-                            <option value="Inativo">Inativo</option>
-                        </select>
-                        <span asp-validation-for="situacao" class="text-danger"></span>
-                    </div>*@
+                    <div class="form-group">
+                        <label for="Cep">Cep</label>
+                        <input type="text" asp-for="Endereco.Cep" class="form-control" placeholder="Digite o CEP">
+                        <span asp-validation-for="Endereco.Cep" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Rua">Rua</label>
+                        <input type="text" asp-for="Endereco.Rua" class="form-control" placeholder="Digite a Rua">
+                        <span asp-validation-for="Endereco.Rua" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Numero">Número</label>
+                                <input type="text" asp-for="Endereco.Numero" class="form-control" placeholder="Digite o Número">
+                                <span asp-validation-for="Endereco.Numero" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Quadra">Quadra</label>
+                                <input type="text" asp-for="Endereco.Quadra" class="form-control" placeholder="Digite a Quadra">
+                                <span asp-validation-for="Endereco.Quadra" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Lote">Lote</label>
+                                <input type="text" asp-for="Endereco.Lote" class="form-control" placeholder="Digite o Lote">
+                                <span asp-validation-for="Endereco.Lote" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Complemento">Complemento</label>
+                        <input type="text" asp-for="Endereco.Complemento" class="form-control" placeholder="Digite o Complemento">
+                        <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-0">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" asp-for="Cliente.Ativo" class="custom-control-input" id="ativo">
+                            <label class="custom-control-label" for="ativo">Ativo?</label>
+                            <span asp-validation-for="Cliente.Ativo" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Salvar</button>
-                    <a href="#" class="btn btn-danger">Cancelar</a>
+                    <a asp-controller="Clientes" asp-action="Index" class="btn btn-danger">Cancelar</a>
                 </div>
             </form>
         </div>

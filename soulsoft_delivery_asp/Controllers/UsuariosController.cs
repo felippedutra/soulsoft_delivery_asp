@@ -63,6 +63,25 @@ namespace soulsoft_delivery_asp.Controllers
         {
             //Instancia da View Model de Usuário
             var UsuarioViewModel = new UsuarioViewModel();
+            //Iniciando a classe UsuarioViewModel
+            UsuarioViewModel.Usuario = new UsuarioApiModel();
+            UsuarioViewModel.TiposUsuarios = new List<TipoUsuarioApiModel>();
+            //Obtendo o EmpresaId
+            int EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
+            //Capturando a lista de Tipos de Usuários
+            HttpResponseMessage responseTipoUsuario = _httpClient.GetAsync($"TipoUsuario/Listar/{EmpresaId}").Result;
+            if (responseTipoUsuario.IsSuccessStatusCode)
+            {
+                var responseTipoUsuarioString = responseTipoUsuario.Content.ReadAsStringAsync().Result;
+                dynamic responseTipoUsuarioJson = JsonConvert.DeserializeObject(responseTipoUsuarioString);
+                if (responseTipoUsuarioJson.status == "Sucesso")
+                {
+                    JArray jObjectTipoUsuario = responseTipoUsuarioJson.conteudo as JArray;
+                    var TiposUsuarios = jObjectTipoUsuario.ToObject<List<TipoUsuarioApiModel>>();
+
+                    UsuarioViewModel.TiposUsuarios = TiposUsuarios;
+                }
+            }
 
             if (Id != 0)
             {
@@ -87,22 +106,6 @@ namespace soulsoft_delivery_asp.Controllers
                     };
 
                     UsuarioViewModel.Usuario = Usuario;
-
-                    //Capturando a lista de Tipos de Usuários
-                    HttpResponseMessage responseTipoUsuario = _httpClient.GetAsync("TipoUsuario/Listar").Result;
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var responseTipoUsuarioString = responseTipoUsuario.Content.ReadAsStringAsync().Result;
-                        dynamic responseTipoUsuarioJson = JsonConvert.DeserializeObject(responseTipoUsuarioString);
-                        if (responseTipoUsuarioJson.status == "Sucesso")
-                        {
-                            JArray jObjectTipoUsuario = responseTipoUsuarioJson.conteudo as JArray;
-                            var TiposUsuarios = jObjectTipoUsuario.ToObject<List<TipoUsuarioApiModel>>();
-
-                            UsuarioViewModel.TiposUsuarios = TiposUsuarios;
-                        }
-                    }
-
                     return View(UsuarioViewModel);
                 }
                 else
@@ -114,23 +117,6 @@ namespace soulsoft_delivery_asp.Controllers
             }
             else
             {
-                UsuarioViewModel.Usuario = new UsuarioApiModel();
-
-                //Capturando a lista de Tipos de Usuários
-                HttpResponseMessage responseTipoUsuario = _httpClient.GetAsync("TipoUsuario/Listar").Result;
-                if (responseTipoUsuario.IsSuccessStatusCode)
-                {
-                    var responseTipoUsuarioString = responseTipoUsuario.Content.ReadAsStringAsync().Result;
-                    dynamic responseTipoUsuarioJson = JsonConvert.DeserializeObject(responseTipoUsuarioString);
-                    if (responseTipoUsuarioJson.status == "Sucesso")
-                    {
-                        JArray jObjectTipoUsuario = responseTipoUsuarioJson.conteudo as JArray;
-                        var TiposUsuarios = jObjectTipoUsuario.ToObject<List<TipoUsuarioApiModel>>();
-
-                        UsuarioViewModel.TiposUsuarios = TiposUsuarios;
-                    }
-                }
-
                 return View(UsuarioViewModel);
             }    
         }

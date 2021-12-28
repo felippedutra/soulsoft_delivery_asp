@@ -1,14 +1,23 @@
-﻿@{
-    //ViewData["crumbs"] = "Teste";
-    //ViewData["crumbs_url"] = "Usuarios/Teste";
+﻿@model IEnumerable<soulsoft_delivery_asp.Models.TipoMedidaApiModel>
+
+@{
     ViewData["title"] = "Tipos de Medidas";
 }
 
+@if (ViewData["TiposMedidasMessage"] != null)
+{
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2 mr-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+        <div>
+            @ViewData["TiposMedidasMessage"]
+        </div>
+    </div>
+}
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Listagem de Tipos de Medidas</h3>
+                <h3 class="card-title">Listagem de Tipos de Medidas###</h3>
 
                 <div class="card-tools">
                     <div class="input-group input-group-sm">
@@ -31,23 +40,42 @@
                             <th>#</th>
                             <th>Descrição</th>
                             <th>Situação</th>
-                            <th>#</th>
+                            <th>Opções</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nome)
+                                </td>
+                                <td>
+                                    @if (item.Ativo == true)
+                                    {
+                                        <i class="fa fa-check text-success"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-times text-danger"></i>
+                                    }
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary btn-sm" asp-controller="TiposMedidas" asp-action="CreateOrEdit" asp-route-TipoMedidaId="@item.Id"><i class="fa fa-pencil-alt"></i></a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="TiposMedidas" asp-action="Delete" asp-route-TipoMedidaId="@item.Id" onclick="return confirm('Deseja remover o Tipo de Medida selecionado?')"><i class="fa fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                     <tfoot>
                         <tr>
                             <th>#</th>
                             <th>Descrição</th>
                             <th>Situação</th>
-                            <th>#</th>
+                            <th>Opções</th>
                         </tr>
                     </tfoot>
                 </table>

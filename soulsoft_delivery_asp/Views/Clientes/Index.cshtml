@@ -42,35 +42,38 @@
                             <th>#</th>
                             <th>Nome</th>
                             <th>Telefone</th>
-                            <th>Email</th>
-                            <th>Situação</th>
+                            <th>Ativo?</th>
                             <th>Opções</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Id)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Nome)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Telefone)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Email)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Ativo)
-                                </td>
-                                <td>
-                                    <a class="btn btn-secondary btn-sm" asp-controller="Clientes" asp-action="CreateOrEdit" asp-route-id="@item.Id"><i class="fa fa-pencil-alt"></i></a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="Clientes" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Deseja remover o Cliente selecionado?')"><i class="fa fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Telefone)
+                            </td>
+                            <td>
+                                @if (item.Ativo == true)
+                                {
+                                    <i class="fa fa-check text-success"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-times text-danger"></i>
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary btn-sm" asp-controller="Clientes" asp-action="CreateOrEdit" asp-route-id="@item.Id"><i class="fa fa-pencil-alt"></i></a>
+                                <a class="btn btn-danger btn-sm" asp-controller="Clientes" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Deseja remover o Cliente selecionado?')"><i class="fa fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                     <tfoot>
@@ -78,8 +81,7 @@
                             <th>#</th>
                             <th>Nome</th>
                             <th>Telefone</th>
-                            <th>Email</th>
-                            <th>Tipo</th>
+                            <th>Ativo?</th>
                             <th>Opções</th>
                         </tr>
                     </tfoot>
