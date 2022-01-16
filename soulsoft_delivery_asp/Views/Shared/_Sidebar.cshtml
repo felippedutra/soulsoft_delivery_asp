@@ -1,4 +1,7 @@
-﻿<!-- Aside -->
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!-- Aside -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/Home/Index" class="brand-link">
@@ -14,7 +17,7 @@
                 <img src="~/img/user.png" class="img-circle elevation-2" alt="Usuário logado">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Usuário logado</a>
+                <a href="#" class="d-block">@HttpContextAccessor.HttpContext.Session.GetString("_usuarioNome")</a>
             </div>
         </div>
 
@@ -33,7 +36,7 @@
                     <a asp-controller="Pedidos" asp-action="Index" class="nav-link Pedidos">
                         <i class="nav-icon fas fa-cash-register"></i>
                         <p>
-                            Pedidos
+                            PDV
                         </p>
                     </a>
                 </li>
@@ -86,12 +89,12 @@
                                 <p>Tipo de Medida</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-controller="TiposEnderecos" asp-action="Index" class="nav-link TiposEnderecos">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Tipo de Endereço</p>
-                            </a>
-                        </li>
+                        @*<li class="nav-item">
+                                <a asp-controller="TiposEnderecos" asp-action="Index" class="nav-link TiposEnderecos">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tipo de Endereço</p>
+                                </a>
+                            </li>*@
                     </ul>
                 </li>
                 <li class="nav-item">

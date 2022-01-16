@@ -1,0 +1,107 @@
+﻿@model soulsoft_delivery_asp.ViewModels.EnderecoViewModel
+
+@{
+    ViewData["breadcrumb"] = "Clientes";
+    ViewData["breadcrumb_url"] = "/Clientes/Index";
+    ViewData["title"] = "Cadastrar";
+}
+
+@if (ViewData["ClientesMessage"] != null)
+{
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2 mr-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+        <div>
+            @ViewData["ClientesMessage"]
+        </div>
+
+    </div>
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- jquery validation -->
+        <div class="card card-secundary">
+            <div class="card-header">
+                <h3 class="card-title">Dados do Endereço</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+
+            <form method="post" asp-controller="Enderecos" asp-action="CreateOrEdit">
+                <div class="card-body">
+
+                    <input type="hidden" asp-for="Endereco.Id">
+                    <input type="hidden" asp-for="Endereco.ClienteId">
+
+                    <div class="form-group">
+                        <label for="tipo_usuario_id">Tipo de Usuário</label>
+                        <select asp-for="Endereco.TipoEnderecoId" class="form-control" id="TipoUsuarissoId">
+                            @foreach (var TipoEndereco in Model.TiposEnderecos)
+                            {
+                                <option value="@TipoEndereco.Id">@Html.DisplayFor(modelItem => TipoEndereco.Nome)</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Endereco.TipoEnderecoId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="senha">Bairro*</label>
+                        <input type="text" asp-for="Endereco.Bairro" class="form-control" placeholder="Digite o Bairro">
+                        <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Cep">Cep</label>
+                        <input type="text" asp-for="Endereco.Cep" class="form-control" placeholder="Digite o CEP">
+                        <span asp-validation-for="Endereco.Cep" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Rua">Rua</label>
+                        <input type="text" asp-for="Endereco.Rua" class="form-control" placeholder="Digite a Rua">
+                        <span asp-validation-for="Endereco.Rua" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Numero">Número</label>
+                                <input type="text" asp-for="Endereco.Numero" class="form-control" placeholder="Digite o Número">
+                                <span asp-validation-for="Endereco.Numero" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Quadra">Quadra</label>
+                                <input type="text" asp-for="Endereco.Quadra" class="form-control" placeholder="Digite a Quadra">
+                                <span asp-validation-for="Endereco.Quadra" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Lote">Lote</label>
+                                <input type="text" asp-for="Endereco.Lote" class="form-control" placeholder="Digite o Lote">
+                                <span asp-validation-for="Endereco.Lote" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Complemento">Complemento</label>
+                        <input type="text" asp-for="Endereco.Complemento" class="form-control" placeholder="Digite o Complemento">
+                        <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <a asp-controller="Clientes" asp-action="Index" class="btn btn-danger">Cancelar</a>
+                </div>
+            </form>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!--/.col (left) -->
+</div>
+<!-- /.row -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

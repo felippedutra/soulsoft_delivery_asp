@@ -6,6 +6,17 @@
     ViewData["title"] = "Cadastrar";
 }
 
+@if (ViewData["ClientesMessage"] != null)
+{
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2 mr-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+        <div>
+            @ViewData["ClientesMessage"]
+        </div>
+
+    </div>
+}
+
 <div class="row">
     <!-- left column -->
     <div class="col-md-12">
@@ -21,8 +32,6 @@
 
                     <input type="hidden" asp-for="Cliente.Id">
                     <input type="hidden" asp-for="Cliente.EmpresaId">
-                    <input type="hidden" asp-for="Endereco.Id">
-                    <input type="hidden" asp-for="Endereco.TipoEnderecoId">
 
                     <div class="form-group">
                         <label for="nome">Nome*</label>
@@ -39,49 +48,27 @@
                         <input type="email" asp-for="Cliente.Email" class="form-control" placeholder="Digite o Email">
                         <span asp-validation-for="Cliente.Email" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label for="senha">Bairro*</label>
-                        <input type="text" asp-for="Endereco.Bairro" class="form-control" placeholder="Digite o Bairro">
-                        <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="Cep">Cep</label>
-                        <input type="text" asp-for="Endereco.Cep" class="form-control" placeholder="Digite o CEP">
-                        <span asp-validation-for="Endereco.Cep" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="Rua">Rua</label>
-                        <input type="text" asp-for="Endereco.Rua" class="form-control" placeholder="Digite a Rua">
-                        <span asp-validation-for="Endereco.Rua" class="text-danger"></span>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="Numero">Número</label>
-                                <input type="text" asp-for="Endereco.Numero" class="form-control" placeholder="Digite o Número">
-                                <span asp-validation-for="Endereco.Numero" class="text-danger"></span>
+
+                    @if (Model.Endereco.Id != 0)
+                    {
+                        <div class="form-group">
+                            <div class="card">
+                                <h5 class="card-header">Endereços do Cliente</h5>
+                                <div class="card-body">
+                                    <h5 class="card-title">Residência</h5>
+                                    <p class="card-text">
+                                        <span><b>Rua</b> @Model.Endereco.Rua, <b>Numero</b> @Model.Endereco.Numero</span><br />
+                                        <span><b>Bairro</b> @Model.Endereco.Bairro, <b>Quadra</b> @Model.Endereco.Quadra, <b>Lote</b> @Model.Endereco.Lote</span><br />
+                                        <span><b>CEP</b> @Model.Endereco.Cep</span><br />
+                                        <span><b>Complemento</b> @Model.Endereco.Complemento</span><br />
+                                    </p>
+                                    <a asp-controller="Enderecos" asp-action="CreateOrEdit" asp-route-EnderecoId="@Model.Endereco.Id" asp-route-ClienteId="@Model.Cliente.Id" class="btn btn-secondary btn-sm">Alterar</a>
+                                    @*<a href="#" class="btn btn-danger btn-sm">Excluir</a>*@
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="Quadra">Quadra</label>
-                                <input type="text" asp-for="Endereco.Quadra" class="form-control" placeholder="Digite a Quadra">
-                                <span asp-validation-for="Endereco.Quadra" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="Lote">Lote</label>
-                                <input type="text" asp-for="Endereco.Lote" class="form-control" placeholder="Digite o Lote">
-                                <span asp-validation-for="Endereco.Lote" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="Complemento">Complemento</label>
-                        <input type="text" asp-for="Endereco.Complemento" class="form-control" placeholder="Digite o Complemento">
-                        <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
-                    </div>
+                    }
+
                     <div class="form-group mb-0">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" asp-for="Cliente.Ativo" class="custom-control-input" id="ativo">
@@ -92,7 +79,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="submit" class="btn btn-primary">@(Model.Endereco.Id != 0 ? "Salvar" : "Avançar")</button>
                     <a asp-controller="Clientes" asp-action="Index" class="btn btn-danger">Cancelar</a>
                 </div>
             </form>

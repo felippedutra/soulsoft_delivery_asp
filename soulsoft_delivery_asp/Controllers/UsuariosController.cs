@@ -127,7 +127,6 @@ namespace soulsoft_delivery_asp.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 //Capturando o Usuário
                 UsuarioApiModel Usuario = new UsuarioApiModel();
                 Usuario = UsuarioViewModel.Usuario;
