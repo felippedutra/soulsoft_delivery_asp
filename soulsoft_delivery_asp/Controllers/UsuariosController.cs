@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using soulsoft_delivery_asp.Models;
+using soulsoft_delivery_asp.Services;
 using soulsoft_delivery_asp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,49 +18,35 @@ namespace soulsoft_delivery_asp.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly HttpClient _httpClient;
-
-        public UsuariosController()
-        {
-            //Metodo Client para consumir Api's
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.BaseAddress = new System.Uri("https://www.soulsoft.tec.br/api/");
-        }
+        const string LocalUrl = "/Usuario/";
 
         [HttpGet]
-        public IActionResult Index(string UsuariosMessage = "")
+        public async Task<IActionResult> IndexAsync(string UsuariosMessage = "")
         {
             if (UsuariosMessage != "")
             {
                 ViewData["UsuariosMessage"] = UsuariosMessage;
             }
 
+            //Definindo p retorno padrão
+            List<UsuarioApiModel> Usuarios = new List<UsuarioApiModel>();
+
             //Obtendo o EmpresaId
             int EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
 
-            HttpResponseMessage response = _httpClient.GetAsync($"Usuario/Listar/{EmpresaId}").Result;
-            if (response.IsSuccessStatusCode)
+            //Requisição da lista de usuários da empresa
+            var UsuariosApi = await HttpClienteApi.NewGetAsync<List<UsuarioApiModel>>(LocalUrl + "Listar/" + EmpresaId);
+
+            if (UsuariosApi != null)
             {
-                var responseString = response.Content.ReadAsStringAsync().Result;
-                dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                if (responseJson.status == "Sucesso")
-                {
-                    //Teste 1
-                    //dynamic usuarios = JsonConvert.DeserializeObject<List<UsuarioApi>>(responseString.conteudo);
-
-                    //Teste 2
-                    JArray jObject = responseJson.conteudo as JArray;
-                    var Usuarios = jObject.ToObject<List<UsuarioApiModel>>();
-
-                    return View(Usuarios);
-                }
+                Usuarios = UsuariosApi;
             }
-            return View(new List<UsuarioApiModel>());
+
+            return View(Usuarios);
         }
 
         [HttpGet]
-        public IActionResult CreateOrEdit(int Id = 0)
+        public async Task<IActionResult> CreateOrEdit(int Id = 0)
         {
             //Instancia da View Model de Usuário
             var UsuarioViewModel = new UsuarioViewModel();
@@ -69,125 +56,79 @@ namespace soulsoft_delivery_asp.Controllers
             //Obtendo o EmpresaId
             int EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
             //Capturando a lista de Tipos de Usuários
-            HttpResponseMessage responseTipoUsuario = _httpClient.GetAsync($"TipoUsuario/Listar/{EmpresaId}").Result;
-            if (responseTipoUsuario.IsSuccessStatusCode)
-            {
-                var responseTipoUsuarioString = responseTipoUsuario.Content.ReadAsStringAsync().Result;
-                dynamic responseTipoUsuarioJson = JsonConvert.DeserializeObject(responseTipoUsuarioString);
-                if (responseTipoUsuarioJson.status == "Sucesso")
-                {
-                    JArray jObjectTipoUsuario = responseTipoUsuarioJson.conteudo as JArray;
-                    var TiposUsuarios = jObjectTipoUsuario.ToObject<List<TipoUsuarioApiModel>>();
+            var TiposUsuarios = await HttpClienteApi.NewGetAsync<List<TipoUsuarioApiModel>>("/TipoUsuario/Listar/" + EmpresaId);
 
-                    UsuarioViewModel.TiposUsuarios = TiposUsuarios;
-                }
-            }
+            UsuarioViewModel.TiposUsuarios = TiposUsuarios;
 
             if (Id != 0)
             {
-                HttpResponseMessage response = _httpClient.GetAsync($"Usuario/{Id}").Result;
-                if (response.IsSuccessStatusCode)
+                //Requisição do Usuario
+                var UsuarioList = await HttpClienteApi.NewGetAsync<List<UsuarioApiModel>>(LocalUrl + Id);
+                var Usuario = new UsuarioApiModel
                 {
-                    //Capturando o Usuário
-                    var responseString = response.Content.ReadAsStringAsync().Result;
-                    dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-
-                    JArray jObject = responseJson.conteudo as JArray;
-
-                    UsuarioApiModel Usuario = new UsuarioApiModel
-                    {
-                        Id = responseJson.conteudo[0].id,
-                        Nome = responseJson.conteudo[0].nome,
-                        Telefone = responseJson.conteudo[0].telefone,
-                        Email = responseJson.conteudo[0].email,
-                        Senha = responseJson.conteudo[0].senha,
-                        TipoUsuarioId = responseJson.conteudo[0].tipoUsuarioId,
-                        Ativo = responseJson.conteudo[0].ativo
-                    };
-
-                    UsuarioViewModel.Usuario = Usuario;
-                    return View(UsuarioViewModel);
-                }
-                else
-                {
-                    //Retorna usuário não encontrado
-                    //return NotFound();
-                    return RedirectToAction("Index");
-                }               
-            }
-            else
-            {
-                return View(UsuarioViewModel);
-            }    
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit(UsuarioViewModel UsuarioViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                //Capturando o Usuário
-                UsuarioApiModel Usuario = new UsuarioApiModel();
-                Usuario = UsuarioViewModel.Usuario;
-
-                //Vinculando o Usuário a empresa
-                Usuario.EmpresaId =(int) HttpContext.Session.GetInt32("_empresaId");
-
-                if (Usuario.Id == 0)
-                {
-                    Usuario.DtCadastro = DateTime.Today;
-                    Usuario.DtUltimoAcesso = DateTime.Today;
-
-                    string json = JsonConvert.SerializeObject(Usuario);
-                    var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = _httpClient.PostAsync("Usuario", httpContent).Result;
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string responseString = response.Content.ReadAsStringAsync().Result;
-                        dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                        if (responseJson.status == "Sucesso")
-                        {
-                            return Redirect("/Usuarios/Index?UsuariosMessage=Usuário cadastrado com Sucesso.");
-                        } 
-                    }
-                }
-                else
-                {
-                    string json = JsonConvert.SerializeObject(Usuario);
-                    var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = _httpClient.PutAsync("Usuario", httpContent).Result;
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string responseString = response.Content.ReadAsStringAsync().Result;
-                        dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                        if (responseJson.status == "Sucesso")
-                        {
-                            return Redirect("/Usuarios/Index?UsuariosMessage=Usuário alterado com Sucesso.");
-                        }
-                    }
-                }
+                    Id = UsuarioList[0].Id,
+                    Nome = UsuarioList[0].Nome,
+                    Telefone = UsuarioList[0].Telefone,
+                    Email = UsuarioList[0].Email,
+                    Senha = UsuarioList[0].Senha,
+                    Ativo = UsuarioList[0].Ativo,
+                    EmpresaId = UsuarioList[0].EmpresaId,
+                    TipoUsuarioId = UsuarioList[0].TipoUsuarioId
+                };
+                UsuarioViewModel.Usuario = Usuario;
             }
 
             return View(UsuarioViewModel);
         }
 
-        [HttpGet]
-        public IActionResult Delete(int Id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateOrEdit(UsuarioViewModel UsuarioViewModel)
         {
-
-            HttpResponseMessage response = _httpClient.DeleteAsync($"Usuario/{Id}").Result;
-            if (response.IsSuccessStatusCode)
+            if (ModelState.IsValid)
             {
-                var responseString = response.Content.ReadAsStringAsync().Result;
-                dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                if (responseJson.status == "Sucesso")
+                //Capturando o Usuário
+                //UsuarioApiModel Usuario = new UsuarioApiModel();
+                var Usuario = UsuarioViewModel.Usuario;
+
+                if (Usuario.Id == 0)
                 {
-                    return Redirect("/Usuarios/Index?UsuariosMessage=Usuário removido com Sucesso.");
+                    //Vinculando o Usuário a empresa
+                    Usuario.EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
+                    //Rquisição de cadastro de Novo Usuário
+                    var Response = await HttpClienteApi.NewPostAsync<Response>(LocalUrl, Usuario);
+
+                    return Redirect("/Usuarios/Index?UsuariosMessage=Usuário Cadastrado com Sucesso!");
+                }
+                else
+                {
+                    //Rquisição de Update de Usuário
+                    var Response = await HttpClienteApi.NewPutAsync<object>(LocalUrl, Usuario);
+
+                    if(Response != null)
+                    {
+                        return Redirect("/Usuarios/Index?UsuariosMessage=Usuário Alterado com Sucesso!");
+                    } 
                 }
             }
+
+            //Capturando a lista de Tipos de Usuários
+            var TiposUsuarios = await HttpClienteApi.NewGetAsync<List<TipoUsuarioApiModel>>("/TipoUsuario/Listar/" + UsuarioViewModel.Usuario.EmpresaId);
+            UsuarioViewModel.TiposUsuarios = TiposUsuarios;
+
+            return View(UsuarioViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int Id)
+        {
+            var Response = await HttpClienteApi.NewDeleteAsync<object>(LocalUrl + Id);
+
+            if (Response != null)
+            {
+                return Redirect("/Usuarios/Index?UsuariosMessage=Usuário removido com Sucesso.");
+            }
+
             return RedirectToAction("Index");
         }
     }
