@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using soulsoft_delivery_asp.Models;
+using soulsoft_delivery_asp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +16,10 @@ namespace soulsoft_delivery_asp.Controllers
 {
     public class TiposUsuariosController : Controller
     {
-        private readonly HttpClient _httpClient;
-        public TiposUsuariosController()
-        {
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.BaseAddress = new System.Uri("https://www.soulsoft.tec.br/api/");
-        }
+        const string LocalUrl = "/TipoUsuario/";
 
         [HttpGet]
-        public IActionResult Index(string TiposUsuariosMessage = "")
+        public async Task<IActionResult> Index(string TiposUsuariosMessage = "")
         {
             if (TiposUsuariosMessage != "")
             {
@@ -33,119 +28,84 @@ namespace soulsoft_delivery_asp.Controllers
 
             //Obtendo o EmpresaId
             int EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
+            //Criando o objeto de lista
+            List<TipoUsuarioApiModel> TiposUsuarios = new List<TipoUsuarioApiModel>();
 
-            HttpResponseMessage response = _httpClient.GetAsync($"TipoUsuario/Listar/{EmpresaId}").Result;
-            if (response.IsSuccessStatusCode)
+            var UsuariosApi = await HttpClienteApi.NewGetAsync<List<TipoUsuarioApiModel>>(LocalUrl + "Listar/" + EmpresaId);
+
+            if(UsuariosApi != null)
             {
-                var responseString = response.Content.ReadAsStringAsync().Result;
-                dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                if (responseJson.status == "Sucesso")
-                {
-                    //Teste 1
-                    //dynamic TiposProdutos = JsonConvert.DeserializeObject<List<UsuarioApi>>(responseString.conteudo);
-
-                    //Teste 2
-                    JArray jObject = responseJson.conteudo as JArray;
-                    var TiposUsuarios = jObject.ToObject<List<TipoUsuarioApiModel>>();
-
-                    return View(TiposUsuarios);
-                }
+                TiposUsuarios = UsuariosApi;
             }
-            return View(new List<TipoUsuarioApiModel>());
+
+            return View(TiposUsuarios);
         }
 
         [HttpGet]
-        public IActionResult CreateOrEdit(int id = 0)
+        public async Task<IActionResult> CreateOrEdit(int Id = 0)
         {
-            if (id != 0)
+            //Criando o objeto de retorno
+            TipoUsuarioApiModel TipoUsuario = new TipoUsuarioApiModel();
+
+            if (Id != 0)
             {
-                HttpResponseMessage response = _httpClient.GetAsync($"TipoUsuario/{id}").Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    var responseString = response.Content.ReadAsStringAsync().Result;
-                    dynamic responseJson = JsonConvert.DeserializeObject(responseString);
+                //Requisição de Tipo de Usuario
+                var TipoUsuarioApi = await HttpClienteApi.NewGetAsync<List<TipoUsuarioApiModel>>(LocalUrl + Id);
 
-                    JArray jObject = responseJson.conteudo as JArray;
-
-                    TipoUsuarioApiModel TipoUsuario = new TipoUsuarioApiModel
-                    {
-                        Id = responseJson.conteudo[0].id,
-                        Nome = responseJson.conteudo[0].nome,
-                        Ativo = responseJson.conteudo[0].ativo
-                    };
-                    return View(TipoUsuario);
-                }
-                else
+                if (TipoUsuarioApi != null)
                 {
-                    //Retorna usuário não encontrado
-                    //return NotFound();
-                    return View(new TipoUsuarioApiModel());
+                    TipoUsuario.Id = TipoUsuarioApi[0].Id;
+                    TipoUsuario.EmpresaId = TipoUsuarioApi[0].EmpresaId;
+                    TipoUsuario.Nome = TipoUsuarioApi[0].Nome;
+                    TipoUsuario.Ativo = TipoUsuarioApi[0].Ativo;
                 }
             }
-            else
-            {
-                return View(new TipoUsuarioApiModel());
-            }
+
+            return View(TipoUsuario);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("Id", "Nome", "Ativo")] TipoUsuarioApiModel TipoUsuarioApi)
+        public async Task<IActionResult> CreateOrEdit([Bind("Id", "EmpresaId", "Nome", "Ativo")] TipoUsuarioApiModel TipoUsuarioApi)
         {
             if (ModelState.IsValid)
             {
-                //Vinculando o Usuário a empresa
-                TipoUsuarioApi.EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
-
                 if (TipoUsuarioApi.Id == 0)
                 {
-                    TipoUsuarioApi.DtCadastro = DateTime.Today;
+                    //Vinculando o Usuário a empresa
+                    TipoUsuarioApi.EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
+                    //Requisição para cadastro de Novo Tipo de Usuário
+                    var Response = await HttpClienteApi.NewPostAsync<object>(LocalUrl, TipoUsuarioApi);
 
-                    string json = JsonConvert.SerializeObject(TipoUsuarioApi);
-                    var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = _httpClient.PostAsync("TipoUsuario", httpContent).Result;
-
-                    if (response.IsSuccessStatusCode)
+                    if(Response != null)
                     {
-                        string responseString = response.Content.ReadAsStringAsync().Result;
-                        dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                        if (responseJson.status == "Sucesso")
-                        {
-                            return Redirect("/TiposUsuarios/Index?TiposUsuariosMessage=Tipo de Usuário cadastrado com Sucesso.");
-                        }
+                        return Redirect("/TiposUsuarios/Index?TiposUsuariosMessage=Tipo de Usuário Cadastrado com Sucesso!");
                     }
                 }
                 else
                 {
-                    string json = JsonConvert.SerializeObject(TipoUsuarioApi);
-                    var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = _httpClient.PutAsync("TipoUsuario", httpContent).Result;
-
-                    if (response.IsSuccessStatusCode)
+                    //Requisição para Alteração de Tipo de Usuário
+                    var Response = await HttpClienteApi.NewPutAsync<object>(LocalUrl, TipoUsuarioApi);
+                    if (Response != null)
                     {
-                        string responseString = response.Content.ReadAsStringAsync().Result;
-                        dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                        if (responseJson.status == "Sucesso")
-                        {
-                            return Redirect("/TiposUsuarios/Index?TiposUsuariosMessage=Tipo de Usuário alterado com Sucesso.");
-                        }
-                    }
+                        return Redirect("/TiposUsuarios/Index?TiposUsuariosMessage=Tipo de Usuário Alterado com Sucesso!");
+                    } 
                 }
             }
             return View(TipoUsuarioApi);
         }
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int Id = 0)
         {
-            HttpResponseMessage response = _httpClient.DeleteAsync($"TipoUsuario/{id}").Result;
-            if (response.IsSuccessStatusCode)
+            if(Id != 0)
             {
-                var responseString = response.Content.ReadAsStringAsync().Result;
-                dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                if (responseJson.status == "Sucesso")
+                //Requisição para Exclusão do Tipo de Usuário
+                var Response = await HttpClienteApi.NewDeleteAsync<object>(LocalUrl + Id);
+
+                if(Response != null)
                 {
-                    return Redirect("/TiposUsuarios/Index?TiposUsuariosMessage=Tipo de Usuário removido com Sucesso.");
+                    return Redirect("/TiposUsuarios/Index?TiposUsuariosMessage=Tipo de Usuário Removido com Sucesso!");
                 }
             }
             return RedirectToAction("Index");

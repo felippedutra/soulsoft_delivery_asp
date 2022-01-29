@@ -90,7 +90,7 @@ namespace soulsoft_delivery_asp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit([Bind("Id", "Nome", "Ativo")] TipoMedidaApiModel TipoMedidaApi)
+        public IActionResult CreateOrEdit([Bind("Id", "EmpresaId", "Nome", "Ativo")] TipoMedidaApiModel TipoMedidaApi)
         {
             if (ModelState.IsValid)
             {

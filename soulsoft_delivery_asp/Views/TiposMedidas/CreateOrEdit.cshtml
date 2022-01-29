@@ -18,7 +18,8 @@
             <!-- form start -->
             <form method="post" asp-controller="TiposMedidas" asp-action="CreateOrEdit">
                 <div class="card-body">
-                    <input type="hidden" asp-for="Id" id="Id">
+                    <input type="hidden" asp-for="Id">
+                    <input type="hidden" asp-for="EmpresaId">
                     <div class="form-group">
                         <label for="descricao">Nome</label>
                         <input type="text" asp-for="Nome" class="form-control" placeholder="Digite o Nome">

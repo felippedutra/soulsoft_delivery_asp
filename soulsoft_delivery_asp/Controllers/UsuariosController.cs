@@ -95,10 +95,13 @@ namespace soulsoft_delivery_asp.Controllers
                 {
                     //Vinculando o Usuário a empresa
                     Usuario.EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
-                    //Rquisição de cadastro de Novo Usuário
+                    //Requisição para cadastro de Novo Usuário
                     var Response = await HttpClienteApi.NewPostAsync<Response>(LocalUrl, Usuario);
 
-                    return Redirect("/Usuarios/Index?UsuariosMessage=Usuário Cadastrado com Sucesso!");
+                    if (Response != null)
+                    {
+                        return Redirect("/Usuarios/Index?UsuariosMessage=Usuário Cadastrado com Sucesso!");
+                    }   
                 }
                 else
                 {
@@ -122,6 +125,7 @@ namespace soulsoft_delivery_asp.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int Id)
         {
+            //Requisição para Exlusão
             var Response = await HttpClienteApi.NewDeleteAsync<object>(LocalUrl + Id);
 
             if (Response != null)
