@@ -17,7 +17,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Listagem de Tipos de Medidas###</h3>
+                <h3 class="card-title">Listagem de Tipos de Medidas</h3>
 
                 <div class="card-tools">
                     <div class="input-group input-group-sm">
@@ -39,7 +39,7 @@
                         <tr>
                             <th>#</th>
                             <th>Descrição</th>
-                            <th>Situação</th>
+                            <th>Ativo?</th>
                             <th>Opções</th>
                         </tr>
                     </thead>
@@ -64,8 +64,8 @@
                                     }
                                 </td>
                                 <td>
-                                    <a class="btn btn-secondary btn-sm" asp-controller="TiposMedidas" asp-action="CreateOrEdit" asp-route-TipoMedidaId="@item.Id"><i class="fa fa-pencil-alt"></i></a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="TiposMedidas" asp-action="Delete" asp-route-TipoMedidaId="@item.Id" onclick="return confirm('Deseja remover o Tipo de Medida selecionado?')"><i class="fa fa-trash-alt"></i></a>
+                                    <a class="btn btn-secondary btn-sm" asp-controller="TiposMedidas" asp-action="CreateOrEdit" asp-route-Id="@item.Id"><i class="fa fa-pencil-alt"></i></a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="TiposMedidas" asp-action="Delete" asp-route-Id="@item.Id" onclick="return confirm('Deseja remover o Tipo de Medida selecionado?')"><i class="fa fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         }
@@ -74,7 +74,7 @@
                         <tr>
                             <th>#</th>
                             <th>Descrição</th>
-                            <th>Situação</th>
+                            <th>Ativo?</th>
                             <th>Opções</th>
                         </tr>
                     </tfoot>
