@@ -1,57 +1,44 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using soulsoft_delivery_asp.Models;
+using soulsoft_delivery_asp.Services;
 using soulsoft_delivery_asp.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace soulsoft_delivery_asp.Controllers
 {
     public class ClientesController : Controller
     {
-        private readonly HttpClient _httpClient;
-        public ClientesController()
-        {
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.BaseAddress = new System.Uri("https://www.soulsoft.tec.br/api/");
-        }
+        const string LocalUrl = "/Cliente/";
 
         [HttpGet]
-        public IActionResult Index(string ClientesMessage = "")
+        public async Task<IActionResult> Index(string ClientesMessage = "")
         {
             if (ClientesMessage != "")
             {
                 ViewData["ClientesMessage"] = ClientesMessage;
             }
 
+            //Definindo p retorno padrão
+            List<ClienteApiModel> Clientes = new List<ClienteApiModel>();
+
+            //Obtendo o EmpresaId
             int EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
 
-            HttpResponseMessage response = _httpClient.GetAsync($"Cliente/Listar/{EmpresaId}").Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var responseString = response.Content.ReadAsStringAsync().Result;
-                dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                if (responseJson.status == "Sucesso")
-                {
-                    JArray jObject = responseJson.conteudo as JArray;
-                    var clientes = jObject.ToObject<List<ClienteApiModel>>();
+            //Requisição da lista de usuários da empresa
+            var ClienteApi = await HttpClienteApi.NewGetAsync<List<ClienteApiModel>>(LocalUrl + "Listar/" + EmpresaId);
 
-                    return View(clientes);
-                }
+            if (ClienteApi != null)
+            {
+                Clientes = ClienteApi;
             }
-            return View(new List<ClienteApiModel>());
+
+            return View(Clientes);
         }
 
         [HttpGet]
-        public IActionResult CreateOrEdit(int ClienteId = 0, string ClientesMessage = "")
+        public async Task<IActionResult> CreateOrEdit(int Id = 0, string ClientesMessage = "")
         {
             if (ClientesMessage != "")
             {
@@ -63,60 +50,34 @@ namespace soulsoft_delivery_asp.Controllers
             ClienteViewModel.Cliente = new ClienteApiModel();
             ClienteViewModel.Endereco = new EnderecoApiModel();
 
-            if (ClienteId != 0)
+            if (Id != 0)
             {
-                HttpResponseMessage responseCliente = _httpClient.GetAsync($"Cliente/{ClienteId}").Result;
-                if (responseCliente.IsSuccessStatusCode)
+                var ClienteApi = await HttpClienteApi.NewGetAsync<List<ClienteApiModel>>(LocalUrl + Id);
+
+                if(ClienteApi != null)
                 {
-                    var responseStringCliente = responseCliente.Content.ReadAsStringAsync().Result;
-                    dynamic responseJsonCliente = JsonConvert.DeserializeObject(responseStringCliente);
+                    ClienteViewModel.Cliente.Id = ClienteApi[0].Id;
+                    ClienteViewModel.Cliente.EmpresaId = ClienteApi[0].EmpresaId;
+                    ClienteViewModel.Cliente.Nome = ClienteApi[0].Nome;
+                    ClienteViewModel.Cliente.Telefone = ClienteApi[0].Telefone;
+                    ClienteViewModel.Cliente.Email = ClienteApi[0].Email;
+                    ClienteViewModel.Cliente.Senha = ClienteApi[0].Senha;
+                    ClienteViewModel.Cliente.Ativo = ClienteApi[0].Ativo;
+                }
 
-                    JArray jObjectCliente = responseJsonCliente.conteudo as JArray;
+                var EnderecoApi = await HttpClienteApi.NewGetAsync<List<EnderecoApiModel>>($"/Endereco/Listar/{Id}");
 
-                    if (responseJsonCliente.status == "Sucesso")
-                    {
-                        var ClienteApi = new ClienteApiModel
-                        {
-                            Id = responseJsonCliente.conteudo[0].id,
-                            Nome = responseJsonCliente.conteudo[0].nome,
-                            Telefone = responseJsonCliente.conteudo[0].telefone,
-                            Email = responseJsonCliente.conteudo[0].email,
-                            Senha = responseJsonCliente.conteudo[0].senha,
-                            Ativo = responseJsonCliente.conteudo[0].ativo
-                        };
-
-                        ClienteViewModel.Cliente = ClienteApi;
-
-                        HttpResponseMessage responseEndereco = _httpClient.GetAsync($"Endereco/Listar/{ClienteId}").Result;
-                        if (responseEndereco.IsSuccessStatusCode)
-                        {
-                            var responseStringEndereco = responseEndereco.Content.ReadAsStringAsync().Result;
-                            dynamic responseJsonEndereco = JsonConvert.DeserializeObject(responseStringEndereco);
-
-                            JArray jObjectEndereco = responseJsonEndereco.conteudo as JArray;
-
-                            if (responseJsonEndereco.status == "Sucesso")
-                            {
-                                if(responseJsonEndereco.conteudo.Count != 0)
-                                {
-                                    var EnderecoApi = new EnderecoApiModel
-                                    {
-                                        Id = responseJsonEndereco.conteudo[0].id,
-                                        Bairro = responseJsonEndereco.conteudo[0].bairro,
-                                        Quadra = responseJsonEndereco.conteudo[0].quadra,
-                                        Numero = responseJsonEndereco.conteudo[0].numero,
-                                        Lote = responseJsonEndereco.conteudo[0].lote,
-                                        Cep = responseJsonEndereco.conteudo[0].cep,
-                                        Rua = responseJsonEndereco.conteudo[0].rua,
-                                        Complemento = responseJsonEndereco.conteudo[0].complemento
-                                    };
-
-                                    ClienteViewModel.Endereco = EnderecoApi;
-                                }
-
-                            }
-                        }
-                    }
+                if(EnderecoApi.Count != 0)
+                {
+                    ClienteViewModel.Endereco.Id = EnderecoApi[0].Id;
+                    ClienteViewModel.Endereco.Bairro = EnderecoApi[0].Bairro;
+                    ClienteViewModel.Endereco.Quadra = EnderecoApi[0].Quadra;
+                    ClienteViewModel.Endereco.Lote = EnderecoApi[0].Lote;
+                    ClienteViewModel.Endereco.Numero = EnderecoApi[0].Numero;
+                    ClienteViewModel.Endereco.Rua = EnderecoApi[0].Rua;
+                    ClienteViewModel.Endereco.Cep = EnderecoApi[0].Cep;
+                    ClienteViewModel.Endereco.Complemento = EnderecoApi[0].Complemento;
+                    ClienteViewModel.Endereco.Ativo = EnderecoApi[0].Ativo;
                 }
             }
             return View(ClienteViewModel);
@@ -124,70 +85,44 @@ namespace soulsoft_delivery_asp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateOrEdit(ClienteApiModel Cliente)
+        public async Task<IActionResult> CreateOrEdit(ClienteApiModel Cliente)
         {
             if (ModelState.IsValid)
             {
+                //Obtendo o Id da Empresa
                 int EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
-
-                Cliente.EmpresaId = EmpresaId;
-                Cliente.DtAtualizacao = DateTime.Today;
-                Cliente.DtCadastro = DateTime.Today;
-
                 if (Cliente.Id == 0)
                 {
+                    //Vinculando o Cliente a Empresa
+                    Cliente.EmpresaId = EmpresaId;
                     //Preparando Cliente
-                    string jsonCliente = JsonConvert.SerializeObject(Cliente);
-                    var httpContentCliente = new StringContent(jsonCliente, Encoding.UTF8, "application/json");
+                    var Response = await HttpClienteApi.NewPostAsync<object>(LocalUrl, Cliente);
 
-                    HttpResponseMessage responseCliente = _httpClient.PostAsync("Cliente", httpContentCliente).Result;
-
-                    if (responseCliente.IsSuccessStatusCode)
+                    if(Response != null)
                     {
-                        string responseStringCliente = responseCliente.Content.ReadAsStringAsync().Result;
-                        dynamic responseJsonCliente = JsonConvert.DeserializeObject(responseStringCliente);
-                        if (responseJsonCliente.status == "Sucesso")
-                        {
-                            int ClienteId = (int)responseJsonCliente.conteudo[0];
-
-                            //Preparando Endereco
-                            return Redirect($"/Enderecos/CreateOrEdit?EnderecoId={0}&ClienteId={ClienteId}&ClientesMessage=Cliente Cadastrado com Sucesso! Preencha o Endereço.");
-                        }
+                        return Redirect($"/Clientes/Index/{EmpresaId}?ClientesMessage=Cliente Cadastrado com Sucesso!");
                     }
+
+                    //Redireciona para o cadastro de endereco
+                    //return Redirect($"/Enderecos/CreateOrEdit?EnderecoId={0}&ClienteId={ClienteId}&ClientesMessage=Cliente Cadastrado com Sucesso! Preencha o Endereço.");
                 }
                 else
                 {
-                    HttpResponseMessage responseEndereco = _httpClient.GetAsync($"Endereco/Listar/{Cliente.Id}").Result;
-                    if (responseEndereco.IsSuccessStatusCode)
+                    //Verifica Endereco
+                    //var Response = await HttpClienteApi.NewGetAsync<Object>($"Endereco/Listar/{Cliente.Id}");
+
+                    //if (Response != null)
+                    //{
+                    //    if (responseJsonEndereco.conteudo.Count == 0)
+                    //    {
+                    //        return Redirect($"/Enderecos/CreateOrEdit?EnderecoId={0}&ClienteId={Cliente.Id}&ClientesMessage=Cliente Alterado com Sucesso! Preencha o Endereço.");
+                    //    }
+                    //}
+
+                    var Response = await HttpClienteApi.NewPutAsync<object>(LocalUrl, Cliente);
+                    if (Response != null)
                     {
-                        var responseStringEndereco = responseEndereco.Content.ReadAsStringAsync().Result;
-                        dynamic responseJsonEndereco = JsonConvert.DeserializeObject(responseStringEndereco);
-
-                        JArray jObjectEndereco = responseJsonEndereco.conteudo as JArray;
-
-                        if (responseJsonEndereco.status == "Sucesso")
-                        {
-                            //Preparando Cliente
-                            string jsonCliente = JsonConvert.SerializeObject(Cliente);
-                            var httpContentCliente = new StringContent(jsonCliente, Encoding.UTF8, "application/json");
-
-                            HttpResponseMessage responseCliente = _httpClient.PutAsync("Cliente", httpContentCliente).Result;
-
-                            if (responseCliente.IsSuccessStatusCode)
-                            {
-                                string responseStringCliente = responseCliente.Content.ReadAsStringAsync().Result;
-                                dynamic responseJsonCliente = JsonConvert.DeserializeObject(responseStringCliente);
-                                if (responseJsonCliente.status == "Sucesso")
-                                {
-                                    if (responseJsonEndereco.conteudo.Count == 0)
-                                    {
-                                        return Redirect($"/Enderecos/CreateOrEdit?EnderecoId={0}&ClienteId={Cliente.Id}&ClientesMessage=Cliente Alterado com Sucesso! Preencha o Endereço.");
-                                    }
-
-                                    return Redirect($"/Clientes/Index/{EmpresaId}?ClientesMessage=Cliente Alterado com Sucesso!");
-                                }
-                            }
-                        }
+                        return Redirect($"/Clientes/Index/{EmpresaId}?ClientesMessage=Cliente Alterado com Sucesso!");
                     }
                 }
             }
@@ -195,18 +130,16 @@ namespace soulsoft_delivery_asp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int ClienteId)
+        public async Task<IActionResult> Delete(int Id)
         {
-            HttpResponseMessage response = _httpClient.DeleteAsync($"Cliente/{ClienteId}").Result;
-            if (response.IsSuccessStatusCode)
+            //Requisição para Exlusão
+            var Response = await HttpClienteApi.NewDeleteAsync<object>(LocalUrl + Id);
+
+            if (Response != null)
             {
-                var responseString = response.Content.ReadAsStringAsync().Result;
-                dynamic responseJson = JsonConvert.DeserializeObject(responseString);
-                if (responseJson.status == "Sucesso")
-                {
-                    return Redirect("/Clientes/Index?ClientesMessage=Cliente Removido com Sucesso!");
-                }
+                return Redirect("/Clientes/Index?ClientesMessage=Cliente Removido com Sucesso!");
             }
+
             return RedirectToAction("Index");
         }
     }

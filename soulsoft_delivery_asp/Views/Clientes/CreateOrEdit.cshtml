@@ -49,21 +49,28 @@
                         <span asp-validation-for="Cliente.Email" class="text-danger"></span>
                     </div>
 
-                    @if (Model.Endereco.Id != 0)
+                    @if (Model.Cliente.Id != 0)
                     {
                         <div class="form-group">
                             <div class="card">
                                 <h5 class="card-header">Endereços do Cliente</h5>
                                 <div class="card-body">
-                                    <h5 class="card-title">Residência</h5>
-                                    <p class="card-text">
-                                        <span><b>Rua</b> @Model.Endereco.Rua, <b>Numero</b> @Model.Endereco.Numero</span><br />
-                                        <span><b>Bairro</b> @Model.Endereco.Bairro, <b>Quadra</b> @Model.Endereco.Quadra, <b>Lote</b> @Model.Endereco.Lote</span><br />
-                                        <span><b>CEP</b> @Model.Endereco.Cep</span><br />
-                                        <span><b>Complemento</b> @Model.Endereco.Complemento</span><br />
-                                    </p>
-                                    <a asp-controller="Enderecos" asp-action="CreateOrEdit" asp-route-EnderecoId="@Model.Endereco.Id" asp-route-ClienteId="@Model.Cliente.Id" class="btn btn-secondary btn-sm">Alterar</a>
-                                    @*<a href="#" class="btn btn-danger btn-sm">Excluir</a>*@
+                                    @if (Model.Endereco.Id != 0)
+                                    {
+                                        <h5 class="card-title">Residência</h5>
+                                        <p class="card-text">
+                                            <span><b>Rua</b> @Model.Endereco.Rua, <b>Numero</b> @Model.Endereco.Numero</span><br />
+                                            <span><b>Bairro</b> @Model.Endereco.Bairro, <b>Quadra</b> @Model.Endereco.Quadra, <b>Lote</b> @Model.Endereco.Lote</span><br />
+                                            <span><b>CEP</b> @Model.Endereco.Cep</span><br />
+                                            <span><b>Complemento</b> @Model.Endereco.Complemento</span><br />
+                                        </p>
+                                        <a asp-controller="Enderecos" asp-action="CreateOrEdit" asp-route-EnderecoId="@Model.Endereco.Id" asp-route-ClienteId="@Model.Cliente.Id" class="btn btn-secondary btn-sm">Alterar</a>
+                                        @*<a href="#" class="btn btn-danger btn-sm">Excluir</a>*@
+                                    }
+                                    else 
+                                    { 
+                                        <a asp-controller="Enderecos" asp-action="CreateOrEdit" asp-route-EnderecoId="" asp-route-ClienteId="@Model.Cliente.Id" class="btn btn-primary btn-sm">Adicionar Endereço</a>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -79,7 +86,8 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">@(Model.Endereco.Id != 0 ? "Salvar" : "Avançar")</button>
+                    @*<button type="submit" class="btn btn-primary">@(Model.Endereco.Id != 0 ? "Salvar" : "Avançar")</button>*@
+                    <button type="submit" class="btn btn-primary">Salvar</button>
                     <a asp-controller="Clientes" asp-action="Index" class="btn btn-danger">Cancelar</a>
                 </div>
             </form>

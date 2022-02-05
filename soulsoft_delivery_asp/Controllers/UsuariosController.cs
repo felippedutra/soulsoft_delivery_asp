@@ -1,17 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using soulsoft_delivery_asp.Models;
 using soulsoft_delivery_asp.Services;
 using soulsoft_delivery_asp.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace soulsoft_delivery_asp.Controllers
@@ -21,7 +13,7 @@ namespace soulsoft_delivery_asp.Controllers
         const string LocalUrl = "/Usuario/";
 
         [HttpGet]
-        public async Task<IActionResult> IndexAsync(string UsuariosMessage = "")
+        public async Task<IActionResult> Index(string UsuariosMessage = "")
         {
             if (UsuariosMessage != "")
             {
@@ -96,7 +88,7 @@ namespace soulsoft_delivery_asp.Controllers
                     //Vinculando o Usuário a empresa
                     Usuario.EmpresaId = (int)HttpContext.Session.GetInt32("_empresaId");
                     //Requisição para cadastro de Novo Usuário
-                    var Response = await HttpClienteApi.NewPostAsync<Response>(LocalUrl, Usuario);
+                    var Response = await HttpClienteApi.NewPostAsync<object>(LocalUrl, Usuario);
 
                     if (Response != null)
                     {
